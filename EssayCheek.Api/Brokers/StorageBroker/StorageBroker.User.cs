@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EssayCheek.Api.Brokers.StorageBroker;
 
-public partial class StorageBroker : IStorageBroker
+public sealed partial class StorageBroker : IStorageBroker
 {
     private DbSet<User> Users => Set<User>();
 

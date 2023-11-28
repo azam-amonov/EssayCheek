@@ -1,4 +1,7 @@
+using EssayCheek.Api.Model.Users;
+using EssayCheek.Api.Services.Users;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EssayCheek.Api.Controllers;
 
@@ -6,5 +9,24 @@ namespace EssayCheek.Api.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    // public readonly Type { get; set; }
+    private readonly IUserService _userService;
+
+    public UserController(IUserService userService)
+    {
+        _userService = userService;
+    }
+
+    [HttpPost]
+    public async ValueTask<IActionResult> CreateAsync(User user)
+    {
+        await _userService.AddUserAsync(user);
+        return Ok(user);
+    }
+
+    [HttpGet]
+    public async ValueTask<IActionResult> GetAsync()
+    {
+        var data = await _userService.GetAllUsersAsync().ToListAsync();
+        return Ok(data);
+    }
 }

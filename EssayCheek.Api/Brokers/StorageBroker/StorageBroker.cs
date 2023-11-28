@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EssayCheek.Api.Brokers.StorageBroker;
 
-public partial class StorageBroker : EFxceptionsContext
+public sealed partial class StorageBroker : EFxceptionsContext
 {
     private readonly IConfiguration _configuration;
 
