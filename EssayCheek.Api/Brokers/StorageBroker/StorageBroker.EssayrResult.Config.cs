@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EssayCheek.Api.Brokers.StorageBroker;
 
-public partial class StorageBroker
+public sealed partial class StorageBroker
 {
-    public void ConfigEssayResult(EntityTypeBuilder<EssayResult> entity)
+    private void ConfigEssayResult(EntityTypeBuilder<EssayResult> entity)
     {
         entity.HasOne(result => result.Essay)
                         .WithOne(essay => essay.EssayResult);

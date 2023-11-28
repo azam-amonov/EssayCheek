@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EssayCheek.Api.Brokers.StorageBroker;
 
-public partial class StorageBroker
+public sealed partial class StorageBroker
 {
     public void ConfigureEssay(EntityTypeBuilder<Essay> entity)
     {

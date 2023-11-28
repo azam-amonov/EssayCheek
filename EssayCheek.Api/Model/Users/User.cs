@@ -11,5 +11,5 @@ public class User
     public string EmailAddress { get; set; }
 
     [JsonIgnore] 
-    public virtual IEnumerable<Essay> Essays {get; set; }
+    public virtual IEnumerable<Essay>? Essays {get; set; }
 }
