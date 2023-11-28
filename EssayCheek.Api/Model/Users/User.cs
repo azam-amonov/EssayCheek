@@ -3,7 +3,7 @@ using EssayCheek.Api.Model.Essays;
 
 namespace EssayCheek.Api.Model.Users;
 
-public class User
+public partial class User 
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; }
@@ -12,4 +12,5 @@ public class User
 
     [JsonIgnore] 
     public virtual IEnumerable<Essay>? Essays {get; set; }
+    
 }

@@ -18,4 +18,6 @@ public class Essay
     
     [JsonIgnore]
     public virtual EssayResult.EssayResult EssayResult { get; set; }
+
+
 }
