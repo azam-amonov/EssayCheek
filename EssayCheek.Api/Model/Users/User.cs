@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using EssayCheek.Api.Model.Essays;
 
 namespace EssayCheek.Api.Model.Users;
 
@@ -9,6 +10,6 @@ public class User
     public string LastName { get; set; }
     public string EmailAddress { get; set; }
 
-    // [JsonIgnore] 
-    // public virtual IEnumerable<Essay> Essays {get; set; }
+    [JsonIgnore] 
+    public virtual IEnumerable<Essay> Essays {get; set; }
 }
