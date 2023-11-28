@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using EssayCheek.Api.Model.Users;
 
 namespace EssayCheek.Api.Model.Essays;
 
@@ -9,7 +10,12 @@ public class Essay
     public string Content { get; set; }
     public DateTimeOffset SubmittedDate { get; set; }
     
-    // public 
-    // [JsonIgnore]
-    // public virtual EssayResult EssayResult { get; set; }
+    [JsonIgnore]
+    public Guid UserId { get; set; }
+    
+    [JsonIgnore]
+    public virtual User User { get; set; }
+    
+    [JsonIgnore]
+    public virtual EssayResult.EssayResult EssayResult { get; set; }
 }
