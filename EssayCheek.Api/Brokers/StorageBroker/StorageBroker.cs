@@ -1,6 +1,8 @@
 using EFxceptions;
+using EssayCheek.Api.Model.EssayResult;
+using EssayCheek.Api.Model.Essays;
+using EssayCheek.Api.Model.Users;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace EssayCheek.Api.Brokers.StorageBroker;
 
@@ -23,7 +25,10 @@ public partial class StorageBroker : EFxceptionsContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // todo: implement ConfiguringModelsR
+        ConfigureUser(modelBuilder.Entity<User>());
+        ConfigureEssay(modelBuilder.Entity<Essay>());
+        ConfigEssayResult(modelBuilder.Entity<EssayResult>());
+        
         base.OnModelCreating(modelBuilder);
     }
 
