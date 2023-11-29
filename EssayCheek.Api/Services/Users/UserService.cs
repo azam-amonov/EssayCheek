@@ -12,7 +12,7 @@ public class UserService : IUserService
         _storageBroker = storageBroker;
     }
 
-    public async ValueTask<User> AddUserAsync(User user) => await _storageBroker.InsertUserAsync(user);
+    public ValueTask<User> AddUserAsync(User user) => throw new NotImplementedException();
 
     public async ValueTask<User?> GetUserByIdAsync(Guid id) => await _storageBroker.SelectUserByIdAsync(id);
 
