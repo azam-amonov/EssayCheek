@@ -16,7 +16,7 @@ public class UserService : IUserService
 
     public async ValueTask<User?> GetUserByIdAsync(Guid id) => await _storageBroker.SelectUserByIdAsync(id);
 
-    public IQueryable<User> GetAllUsersAsync() =>  _storageBroker.SelectAllUsers();
+    public IQueryable<User> GetAllUsersAsync() => _storageBroker.SelectAllUsers();
 
     public async ValueTask<User> ModifyUserAsync(User user) => await _storageBroker.UpdateUserAsync(user);
 

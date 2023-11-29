@@ -6,8 +6,7 @@ namespace EssayCheek.Api.Brokers.StorageBroker;
 public sealed partial class StorageBroker : IStorageBroker
 {
     private DbSet<User> Users => Set<User>();
-
-
+    
     public IQueryable<User> SelectAllUsers() => SelectAll<User>();
     
     public async ValueTask<User> InsertUserAsync(User user) => await InsertAsync<User>(user);
