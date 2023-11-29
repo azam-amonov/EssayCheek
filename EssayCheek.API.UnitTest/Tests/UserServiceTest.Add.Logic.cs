@@ -1,6 +1,6 @@
-using EssayCheek.Api.Helpers.Extensions;
 using EssayCheek.Api.Model.Users;
 using FluentAssertions;
+using Force.DeepCloner;
 using Moq;
 
 namespace EssayCheek.API.UnitTest.Tests;
