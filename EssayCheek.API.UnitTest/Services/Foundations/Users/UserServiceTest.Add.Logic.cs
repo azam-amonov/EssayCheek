@@ -3,7 +3,7 @@ using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
 
-namespace EssayCheek.API.UnitTest.Tests;
+namespace EssayCheek.API.UnitTest.Services.Foundations.Users;
 
 public partial class UserServiceTest
 {
