@@ -1,3 +1,4 @@
+using EssayCheek.Api.Brokers.Logging;
 using EssayCheek.Api.Brokers.StorageBroker;
 using EssayCheek.Api.Model.Users;
 
@@ -6,10 +7,12 @@ namespace EssayCheek.Api.Services.Users;
 public class UserService : IUserService
 {
     private readonly IStorageBroker _storageBroker;
+    private readonly ILoggingBroker _loggingBroker;
 
-    public UserService(IStorageBroker storageBroker)
+    public UserService(IStorageBroker storageBroker, ILoggingBroker loggingBroker)
     {
         _storageBroker = storageBroker;
+        _loggingBroker = loggingBroker;
     }
 
     public async ValueTask<User> AddUserAsync(User user) => await _storageBroker.InsertUserAsync(user);
