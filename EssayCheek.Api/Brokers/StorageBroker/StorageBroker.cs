@@ -1,7 +1,7 @@
 using EFxceptions;
 using EssayCheek.Api.Model.EssayResult;
 using EssayCheek.Api.Model.Essays;
-using EssayCheek.Api.Model.Users;
+using EssayCheek.Api.Model.Foundation.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace EssayCheek.Api.Brokers.StorageBroker;

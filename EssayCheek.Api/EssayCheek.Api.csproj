@@ -30,4 +30,8 @@
       <PackageReference Include="xunit.extensibility.core" Version="2.4.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Model\Foundation\" />
+    </ItemGroup>
+
 </Project>

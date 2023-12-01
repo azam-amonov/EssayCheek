@@ -1,6 +1,6 @@
 using Xeptions;
 
-namespace EssayCheek.Api.Model.Users.Exceptions;
+namespace EssayCheek.Api.Model.Foundation.Users.Exceptions;
 
 public class UserValidationException : Xeption
 {

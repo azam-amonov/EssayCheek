@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 using EssayCheek.Api.Brokers.Logging;
 using EssayCheek.Api.Brokers.StorageBroker;
 using EssayCheek.Api.Model.Essays;
-using EssayCheek.Api.Model.Users;
+using EssayCheek.Api.Model.Foundation.Users;
 using EssayCheek.Api.Services.Users;
 using Moq;
 using Tynamix.ObjectFiller;

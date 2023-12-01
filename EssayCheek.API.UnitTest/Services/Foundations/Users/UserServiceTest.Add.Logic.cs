@@ -1,4 +1,4 @@
-using EssayCheek.Api.Model.Users;
+using EssayCheek.Api.Model.Foundation.Users;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
