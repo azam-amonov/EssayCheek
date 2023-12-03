@@ -5,7 +5,7 @@ using EssayCheek.Api.Model.Foundation.Users.Exceptions;
 
 namespace EssayCheek.Api.Services.Users;
 
-public class UserService : IUserService
+public partial class UserService : IUserService
 {
     private readonly IStorageBroker _storageBroker;
     private readonly ILoggingBroker _loggingBroker;
@@ -16,23 +16,13 @@ public class UserService : IUserService
         _loggingBroker = loggingBroker;
     }
 
-    public async ValueTask<User> AddUserAsync(User user)
+    public ValueTask<User> AddUserAsync(User user) => 
+    TryCatch(async () =>
     {
-        try
-        {
-            if (user is null)
-                throw new NullUserException();
-        }
-        catch (NullUserException nullUserException)
-        {
-            var userValidationException = new UserValidationException(nullUserException);
-            
-            _loggingBroker.LogError(userValidationException);
-            throw userValidationException;
-        }
-        
+        ValidateUserNotNull(user);
+
         return await _storageBroker.InsertUserAsync(user);
-    }
+    });
 
     public async ValueTask<User?> GetUserByIdAsync(Guid id) => await _storageBroker.SelectUserByIdAsync(id);
 
