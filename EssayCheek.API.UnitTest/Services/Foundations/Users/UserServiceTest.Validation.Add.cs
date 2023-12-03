@@ -41,31 +41,28 @@ public partial class UserServiceTest
     public async Task ShouldThrowValidationExceptionOnAddIfUserIsInvalidAndLogAsync(string invalidText)
     {
         // Given
-        var invalidUser = new User
-        {
-            EmailAddress = invalidText
-        };
+        var invalidUser = CreateRandomUser();
         
-        var invalidUserException = new InvalidUserException();
+        var expectedInvalidUserException = new InvalidUserException();
         
-        invalidUserException.AddData(
+        expectedInvalidUserException.AddData(
                         key: nameof(User.Id),
                         values: "Id is required");
         
-        invalidUserException.AddData(
+        expectedInvalidUserException.AddData(
                         key:nameof(User.FirstName),
-                        values: "Text is required");
+                        values: "First name is required");
         
-        invalidUserException.AddData(
+        expectedInvalidUserException.AddData(
                         key:nameof(User.LastName),
-                        values: "Text is required");
+                        values: "Last name is required");
         
-        invalidUserException.AddData(
+        expectedInvalidUserException.AddData(
                         key: nameof(User.EmailAddress),
                         values: "Email address is required");
         
         var expectedUserValidationException = 
-                        new UserValidationException(invalidUserException);
+                        new UserValidationException(expectedInvalidUserException);
         
         
         // When
@@ -80,6 +77,8 @@ public partial class UserServiceTest
 
         _loggingBrokerMock.Verify(broker => broker.LogError(
             It.Is(SameExceptionAs(expectedUserValidationException))),Times.Once);
+
+        _storageBrokerMock.Verify(broker => broker.InsertUserAsync(invalidUser),Times.Once);
         
         _loggingBrokerMock.VerifyNoOtherCalls();
         _storageBrokerMock.VerifyNoOtherCalls();

@@ -23,7 +23,11 @@ public partial class UserServiceTest
         
         // Then
         actualUser.Should().BeEquivalentTo(expectedUser);
+
         _storageBrokerMock.Verify(broker => broker.InsertUserAsync(inputUser), Times.Once);
+        
         _storageBrokerMock.VerifyNoOtherCalls();
+        _loggingBrokerMock.VerifyNoOtherCalls();
+        
     }
 }

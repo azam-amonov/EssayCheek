@@ -1,5 +1,7 @@
 using EssayCheek.Api.Model.Foundation.Users;
 using EssayCheek.Api.Model.Foundation.Users.Exceptions;
+using Microsoft.Data.SqlClient;
+using Xeptions;
 
 namespace EssayCheek.Api.Services.Users;
 
@@ -14,10 +16,33 @@ public partial class UserService
         }
         catch (NullUserException nullUserException)
         {
-            var userValidationException = new UserValidationException(nullUserException);
-            
-            _loggingBroker.LogError(userValidationException);
-            throw userValidationException;
+            throw CreateAndLogValidationException(nullUserException);
+        }
+        catch (InvalidUserException invalidUserException)
+        {
+            throw CreateAndLogValidationException(invalidUserException);
+        }
+        catch (SqlException sqlException)
+        {
+            var userStorageException = new FailedUserStorageException(sqlException);
+            throw CreateAndLogCriticalDependencyException(userStorageException);
         }
     }
+
+    private UserValidationException CreateAndLogValidationException(Xeption exception)
+    {
+        var userValidationException = new UserValidationException(exception);
+        
+        _loggingBroker.LogError(userValidationException);
+        return userValidationException;
+    }
+    
+    private UserDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
+    {
+        var userDependencyException = new UserDependencyException(exception);
+        
+        _loggingBroker.LogCritical(userDependencyException);
+        return userDependencyException;
+    }
 }
+

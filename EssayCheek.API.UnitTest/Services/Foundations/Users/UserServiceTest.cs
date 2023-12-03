@@ -4,6 +4,7 @@ using EssayCheek.Api.Brokers.StorageBroker;
 using EssayCheek.Api.Model.Essays;
 using EssayCheek.Api.Model.Foundation.Users;
 using EssayCheek.Api.Services.Users;
+using Microsoft.Data.SqlClient;
 using Moq;
 using Tynamix.ObjectFiller;
 using Xeptions;
@@ -29,6 +30,7 @@ public partial class UserServiceTest
     private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
                     actualException => actualException.SameExceptionAs(expectedException);
 
+    private static SqlException GetSqlException() => (SqlException)Foratter
     private static User CreateRandomUser() => CreateUserFiller().Create();
 
     private static Filler<User> CreateUserFiller()
