@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using EssayCheek.Api.Brokers.Logging;
 using EssayCheek.Api.Brokers.StorageBroker;
 using EssayCheek.Api.Model.Essays;
@@ -27,10 +28,35 @@ public partial class UserServiceTest
             loggingBroker:_loggingBrokerMock.Object);
     }
 
+    public static TheoryData<int> InvalidMinutes()
+    {
+        int minutesInFuture = GetRandomNumber();
+        int minutesInPast = GetRandomNegativeNumber();
+
+        return new TheoryData<int>
+        {
+            minutesInFuture,
+            minutesInPast
+        };
+    }
+
+    private static int GetRandomNumber() =>
+                    new IntRange(min: 9, max: 99).GetValue();
+    
+    private static int GetRandomNegativeNumber() => 
+                    -1 * new IntRange(min: 9, max: 99).GetValue();
+    
     private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
                     actualException => actualException.SameExceptionAs(expectedException);
 
-    private static SqlException GetSqlException() => (SqlException)Foratter
+    private static SqlException GetSqlException() =>
+                    (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+    private static string GteRandomString() =>
+                    new MnemonicString(wordCount: GetRandomNumber()).GetValue();
+    
+    
+    
     private static User CreateRandomUser() => CreateUserFiller().Create();
 
     private static Filler<User> CreateUserFiller()
