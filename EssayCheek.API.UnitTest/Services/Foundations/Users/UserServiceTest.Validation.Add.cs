@@ -75,5 +75,13 @@ public partial class UserServiceTest
             await Assert.ThrowsAsync<UserValidationException>(addUserTask.AsTask);
 
         // Then
+
+        actualUserValidationException.Should().BeEquivalentTo(expectedUserValidationException);
+
+        _loggingBrokerMock.Verify(broker => broker.LogError(
+            It.Is(SameExceptionAs(expectedUserValidationException))),Times.Once);
+        
+        _loggingBrokerMock.VerifyNoOtherCalls();
+        _storageBrokerMock.VerifyNoOtherCalls();
     }
 }
