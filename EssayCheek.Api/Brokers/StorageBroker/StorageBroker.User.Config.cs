@@ -1,5 +1,5 @@
 using EssayCheek.Api.Model.Essays;
-using EssayCheek.Api.Model.Users;
+using EssayCheek.Api.Model.Foundation.Users;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EssayCheek.Api.Brokers.StorageBroker;
