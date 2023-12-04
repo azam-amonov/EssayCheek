@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using EssayCheek.Api.Brokers.DateTimes;
@@ -58,9 +59,15 @@ public partial class UserServiceTest
 
     private static string GteRandomString() =>
             new MnemonicString(wordCount: GetRandomNumber()).GetValue();
-    
-    
-    
+
+
+    private static IQueryable<User> CreateRandomUsers()
+    {
+        return CreateUserFiller()
+            .Create(count: GetRandomNumber())
+            .AsQueryable();
+    }
+
     private static User CreateRandomUser() =>
                     CreateUserFiller().Create();
 

@@ -1,4 +1,5 @@
 using EFxceptions.Models.Exceptions;
+using EssayCheek.Api.Brokers.StorageBroker;
 using EssayCheek.Api.Model.Foundation.Users;
 using EssayCheek.Api.Model.Foundation.Users.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -8,6 +9,7 @@ namespace EssayCheek.Api.Services.Users;
 
 public partial class UserService
 {
+    private delegate IQueryable<User> ReturningUsersFunction();
     private delegate ValueTask<User> ReturningUserFunction();
     
     private async ValueTask<User> TryCatch(ReturningUserFunction returningUserFunction){
@@ -48,6 +50,26 @@ public partial class UserService
         }
     }
 
+    private IQueryable<User> TryCatch(ReturningUsersFunction returningUsersFunction)
+    {
+        try
+        {
+            return returningUsersFunction();
+        }
+        catch (SqlException sqlException)
+        {
+            var failedUserStorageException = new FailedUserStorageException(sqlException);
+            
+            throw CreateAndLogCriticalDependencyException(failedUserStorageException);
+        }
+        catch (Exception exception)
+        {
+            var failedUserServiceException = new FailedUserServiceException(exception);
+            
+            throw CreateAndLogServiceException(failedUserServiceException);
+        }
+    }
+
     private Exception CreateAndLogServiceException(Xeption exception)
     {
         var userServiceException = new UserServiceException(exception);
@@ -82,5 +104,6 @@ public partial class UserService
         _loggingBroker.LogCritical(userDependencyException);
         return userDependencyException;
     }
+    
 }
 

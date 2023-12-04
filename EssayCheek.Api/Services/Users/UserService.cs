@@ -37,7 +37,8 @@ public partial class UserService : IUserService
         return maybeUser!;
     });
 
-    public IQueryable<User> GetAllUsersAsync() => _storageBroker.SelectAllUsers();
+    public IQueryable<User> RetrieveAllUsers() => 
+                TryCatch(() => _storageBroker.SelectAllUsers());
 
     public async ValueTask<User> ModifyUserAsync(User user) => await _storageBroker.UpdateUserAsync(user);
 
