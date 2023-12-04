@@ -23,13 +23,13 @@ public partial class UserService
         {
             throw CreateAndLogValidationException(invalidUserException);
         }
-        // catch (SqlException sqlException)
-        // {
-        //     var userStorageException =
-        //                     new FailedUserStorageException(sqlException);
-        //
-        //     throw CreateAndLogCriticalDependencyException(userStorageException);
-        // }
+        catch (SqlException sqlException)
+        {
+            var userStorageException =
+                            new FailedUserStorageException(sqlException);
+        
+            throw CreateAndLogCriticalDependencyException(userStorageException);
+        }
         catch (DuplicateKeyException duplicateKeyException)
         {
             var alreadyExistsUserException = new
