@@ -25,14 +25,14 @@ public partial class UserService
 
     private static dynamic IsInvalid(Guid id) => new
     {
-        Comdition = id == Guid.Empty,
-        Message = "Id is required."
+        Condition = id == Guid.Empty,
+        Message = "Id is required"
     };
     
     private static dynamic IsInvalid(string text) => new
     {
         Condition = string.IsNullOrWhiteSpace(text),
-        Message = "Text is required."
+        Message = "Text is required"
     };
     
     private static void Validate(params (dynamic Rule, string Parameter)[] validations)

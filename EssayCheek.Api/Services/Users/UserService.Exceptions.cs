@@ -1,3 +1,4 @@
+using EFxceptions.Models.Exceptions;
 using EssayCheek.Api.Model.Foundation.Users;
 using EssayCheek.Api.Model.Foundation.Users.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -24,9 +25,27 @@ public partial class UserService
         }
         catch (SqlException sqlException)
         {
-            var userStorageException = new FailedUserStorageException(sqlException);
+            var userStorageException = 
+                        new FailedUserStorageException(sqlException);
+            
             throw CreateAndLogCriticalDependencyException(userStorageException);
         }
+        catch (DuplicateKeyException duplicateKeyException)
+        {
+            var alreadyExistsUserException = new
+                            AlreadyExistsUserException(duplicateKeyException);
+            
+            throw CreateAndLogDependencyValidationException(alreadyExistsUserException);
+        }
+    }
+
+    private Exception CreateAndLogDependencyValidationException(Xeption exception)
+    {
+        var userValidationException = 
+                        new UserDependencyValidationException(exception);
+        
+        _loggingBroker.LogError(userValidationException);
+        return userValidationException;
     }
 
     private UserValidationException CreateAndLogValidationException(Xeption exception)
