@@ -51,9 +51,10 @@ public partial class UserServiceTest
     {
         // Given
         User randomUser = CreateRandomUser();
-        string someMessage = GteRandomString();
+        User alreadyExists = randomUser;
+        string randomMessage = GteRandomString();
         
-        var duplicateKeyException = new DuplicateKeyException(someMessage);
+        var duplicateKeyException = new DuplicateKeyException(randomMessage);
 
         var alreadyExistsUserException = 
                 new AlreadyExistsUserException(duplicateKeyException);
@@ -61,6 +62,9 @@ public partial class UserServiceTest
         var exceptedUserDependencyValidationException =
                 new UserDependencyValidationException(alreadyExistsUserException);
         
+        _storageBrokerMock.Setup(broker => broker.InsertUserAsync(randomUser))
+                        .ThrowsAsync(duplicateKeyException);
+
         // When
         ValueTask<User> addUserTask = _userService.AddUserAsync(randomUser);
 
@@ -69,11 +73,15 @@ public partial class UserServiceTest
         
         // Then
         actualDependencyValidationException.Should().BeEquivalentTo(exceptedUserDependencyValidationException);
-
+        
         _loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                         exceptedUserDependencyValidationException))), Times.Once);
         
+        _storageBrokerMock.Verify(broker =>
+                broker.InsertUserAsync(It.IsAny<User>()),Times.Once);
+        
+        _dateTimeBrokerMock.VerifyNoOtherCalls();
         _loggingBrokerMock.VerifyNoOtherCalls();
         _storageBrokerMock.VerifyNoOtherCalls();
     }
