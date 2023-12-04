@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
+using EssayCheek.Api.Brokers.DateTimes;
 using EssayCheek.Api.Brokers.Logging;
 using EssayCheek.Api.Brokers.StorageBroker;
 using EssayCheek.Api.Model.Essays;
@@ -15,16 +16,19 @@ namespace EssayCheek.API.UnitTest.Services.Foundations.Users;
 public partial class UserServiceTest
 {
     private readonly Mock<IStorageBroker> _storageBrokerMock;
+    private readonly Mock<IDateTimeBroker> _dateTimeBrokerMock;
     private readonly Mock<ILoggingBroker> _loggingBrokerMock;
     private readonly IUserService _userService;
 
     public UserServiceTest()
     {
         _storageBrokerMock = new Mock<IStorageBroker>();
+        _dateTimeBrokerMock = new Mock<IDateTimeBroker>();
         _loggingBrokerMock = new Mock<ILoggingBroker>();
         
         _userService = new UserService(
             storageBroker: _storageBrokerMock.Object,
+            dateTimeBroker: _dateTimeBrokerMock.Object,
             loggingBroker:_loggingBrokerMock.Object);
     }
 

@@ -1,3 +1,4 @@
+using EssayCheek.Api.Brokers.DateTimes;
 using EssayCheek.Api.Brokers.Logging;
 using EssayCheek.Api.Brokers.StorageBroker;
 using EssayCheek.Api.Model.Foundation.Users;
@@ -7,11 +8,13 @@ namespace EssayCheek.Api.Services.Users;
 public partial class UserService : IUserService
 {
     private readonly IStorageBroker _storageBroker;
+    private readonly IDateTimeBroker _dateTimeBroker;
     private readonly ILoggingBroker _loggingBroker;
 
-    public UserService(IStorageBroker storageBroker, ILoggingBroker loggingBroker)
+    public UserService(IStorageBroker storageBroker, IDateTimeBroker dateTimeBroker, ILoggingBroker loggingBroker)
     {
         _storageBroker = storageBroker;
+        _dateTimeBroker = dateTimeBroker;
         _loggingBroker = loggingBroker;
     }
 

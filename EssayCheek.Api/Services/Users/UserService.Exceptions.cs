@@ -25,18 +25,31 @@ public partial class UserService
         }
         catch (SqlException sqlException)
         {
-            var userStorageException = 
-                        new FailedUserStorageException(sqlException);
-            
+            var userStorageException =
+                            new FailedUserStorageException(sqlException);
+
             throw CreateAndLogCriticalDependencyException(userStorageException);
         }
         catch (DuplicateKeyException duplicateKeyException)
         {
             var alreadyExistsUserException = new
                             AlreadyExistsUserException(duplicateKeyException);
-            
+
             throw CreateAndLogDependencyValidationException(alreadyExistsUserException);
         }
+        catch (Exception exception)
+        {
+            var failedUserException = new FailedUserServiceException(exception);
+            throw CreateAndLogServiceException(failedUserException);
+        }
+    }
+
+    private Exception CreateAndLogServiceException(Xeption exception)
+    {
+        var userServiceException = new UserServiceException(exception);
+        
+        _loggingBroker.LogError(userServiceException);
+        return userServiceException;
     }
 
     private Exception CreateAndLogDependencyValidationException(Xeption exception)
