@@ -1,3 +1,5 @@
+using System.Data;
+using System.Reflection.Metadata;
 using EssayCheek.Api.Model.Foundation.Users;
 using EssayCheek.Api.Model.Foundation.Users.Exceptions;
 
@@ -15,6 +17,9 @@ public partial class UserService
        
     }
 
+    public void ValidateUserId(Guid id) =>
+                    Validate((Rule: IsInvalid(id), Parameter: nameof(User.Id)));
+    
     private static void ValidateUserIsNotNull(User user)
     {
         if (user is null)
