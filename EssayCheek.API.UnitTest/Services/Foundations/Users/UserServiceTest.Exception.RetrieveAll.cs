@@ -41,7 +41,6 @@ public partial class UserServiceTest
         _loggingBrokerMock.VerifyNoOtherCalls();
     }
     
-    // todo: finish this method
     [Fact]
     public void ShouldThrowServiceExceptionOnRetrieveAllIfServiceErrorOccursAndLogItAsync()
     {
