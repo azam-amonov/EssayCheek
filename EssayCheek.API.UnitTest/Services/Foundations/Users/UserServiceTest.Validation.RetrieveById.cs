@@ -44,7 +44,6 @@ public partial class UserServiceTest
         _dateTimeBrokerMock.VerifyNoOtherCalls();
     }
     
-    // todo: check this code for duplicate!
     [Fact]
     public async Task ShouldThrowFoundExceptionOnRetrieveByIdUserIsNotFoundAndLogItAsync()
     {
