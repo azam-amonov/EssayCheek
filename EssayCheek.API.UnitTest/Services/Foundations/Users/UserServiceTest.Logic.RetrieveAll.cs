@@ -17,7 +17,7 @@ public partial class UserServiceTest
         _storageBrokerMock.Setup(broker 
                         => broker.SelectAllUsers()).Returns(storageUsers);
         // when
-        IQueryable<User> actualUsers = _userService.RetrieveAllUsersAsync();
+        IQueryable<User> actualUsers = _userService.RetrieveAllUsers();
         
         // then
         actualUsers.Should().BeEquivalentTo(expectedUsers);

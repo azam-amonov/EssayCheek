@@ -104,5 +104,6 @@ public partial class UserService
         _loggingBroker.LogCritical(userDependencyException);
         return userDependencyException;
     }
+    
 }
 

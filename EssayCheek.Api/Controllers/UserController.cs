@@ -26,7 +26,7 @@ public class UserController : ControllerBase
     [HttpGet]
     public async ValueTask<IActionResult> GetAsync()
     {
-        var data = await _userService.RetrieveAllUsersAsync().ToListAsync();
+        var data = await _userService.RetrieveAllUsers().ToListAsync();
         return Ok(data);
     }
 }
