@@ -18,12 +18,17 @@ public partial class UserServiceTest
 
         _storageBrokerMock.Setup(broker
                         => broker.InsertUserAsync(inputUser)).ReturnsAsync(persistedUser);
+        
         // When
         User actualUser = await _userService.AddUserAsync(inputUser);
         
         // Then
         actualUser.Should().BeEquivalentTo(expectedUser);
-        _storageBrokerMock.Verify(broker => broker.InsertUserAsync(inputUser), Times.Once);
+
+        _storageBrokerMock.Verify(broker =>
+                broker.InsertUserAsync(inputUser), Times.Once);
+        
         _storageBrokerMock.VerifyNoOtherCalls();
+        _loggingBrokerMock.VerifyNoOtherCalls();
     }
 }

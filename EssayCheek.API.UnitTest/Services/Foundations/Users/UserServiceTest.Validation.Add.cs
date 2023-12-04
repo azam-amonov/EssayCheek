@@ -12,7 +12,7 @@ public partial class UserServiceTest
     {
         // Given
         User? nullUser = null;
-        var nullUserException = new NullUserException();
+        var nullUserException = new UserNullException();
 
         var expectedUserValidationException =
                         new UserValidationException(nullUserException);
@@ -41,31 +41,33 @@ public partial class UserServiceTest
     public async Task ShouldThrowValidationExceptionOnAddIfUserIsInvalidAndLogAsync(string invalidText)
     {
         // Given
-        var invalidUser = new User
+        var invalidUser = new User()
         {
-            EmailAddress = invalidText
+                FirstName = invalidText,
+                LastName = invalidText,
+                EmailAddress = invalidText
         };
         
-        var invalidUserException = new InvalidUserException();
+        var expectedInvalidUserException = new InvalidUserException();
         
-        invalidUserException.AddData(
+        expectedInvalidUserException.AddData(
                         key: nameof(User.Id),
                         values: "Id is required");
         
-        invalidUserException.AddData(
+        expectedInvalidUserException.AddData(
                         key:nameof(User.FirstName),
                         values: "Text is required");
         
-        invalidUserException.AddData(
+        expectedInvalidUserException.AddData(
                         key:nameof(User.LastName),
                         values: "Text is required");
         
-        invalidUserException.AddData(
+        expectedInvalidUserException.AddData(
                         key: nameof(User.EmailAddress),
-                        values: "Email address is required");
+                        values: "Text is required");
         
         var expectedUserValidationException = 
-                        new UserValidationException(invalidUserException);
+                        new UserValidationException(expectedInvalidUserException);
         
         
         // When
@@ -74,14 +76,18 @@ public partial class UserServiceTest
         UserValidationException actualUserValidationException = 
             await Assert.ThrowsAsync<UserValidationException>(addUserTask.AsTask);
 
+        
         // Then
-
         actualUserValidationException.Should().BeEquivalentTo(expectedUserValidationException);
 
-        _loggingBrokerMock.Verify(broker => broker.LogError(
-            It.Is(SameExceptionAs(expectedUserValidationException))),Times.Once);
+        _loggingBrokerMock.Verify(broker => 
+            broker.LogError(It.Is(SameExceptionAs(
+                    expectedUserValidationException))),Times.Once);
+
+        _storageBrokerMock.Verify(broker => 
+                broker.InsertUserAsync(invalidUser),Times.Never);
         
-        _loggingBrokerMock.VerifyNoOtherCalls();
         _storageBrokerMock.VerifyNoOtherCalls();
+        _loggingBrokerMock.VerifyNoOtherCalls();
     }
 }

@@ -1,7 +1,6 @@
 using EssayCheek.Api.Brokers.Logging;
 using EssayCheek.Api.Brokers.StorageBroker;
 using EssayCheek.Api.Model.Foundation.Users;
-using EssayCheek.Api.Model.Foundation.Users.Exceptions;
 
 namespace EssayCheek.Api.Services.Users;
 
@@ -19,10 +18,10 @@ public partial class UserService : IUserService
     public ValueTask<User> AddUserAsync(User user) => 
     TryCatch(async () =>
     {
-        ValidateUserNotNull(user);
-
+        ValidateUser(user);
         return await _storageBroker.InsertUserAsync(user);
     });
+
 
     public async ValueTask<User?> GetUserByIdAsync(Guid id) => await _storageBroker.SelectUserByIdAsync(id);
 
