@@ -41,29 +41,30 @@ public partial class UserServiceTest
     }
 
     private static int GetRandomNumber() =>
-                    new IntRange(min: 9, max: 99).GetValue();
+            new IntRange(min: 9, max: 99).GetValue();
     
     private static int GetRandomNegativeNumber() => 
-                    -1 * new IntRange(min: 9, max: 99).GetValue();
+            -1 * new IntRange(min: 9, max: 99).GetValue();
     
     private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
-                    actualException => actualException.SameExceptionAs(expectedException);
+            actualException => actualException.SameExceptionAs(expectedException);
 
     private static SqlException GetSqlException() =>
-                    (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
     private static string GteRandomString() =>
-                    new MnemonicString(wordCount: GetRandomNumber()).GetValue();
+            new MnemonicString(wordCount: GetRandomNumber()).GetValue();
     
     
     
-    private static User CreateRandomUser() => CreateUserFiller().Create();
+    private static User CreateRandomUser() =>
+                    CreateUserFiller().Create();
 
     private static Filler<User> CreateUserFiller()
     {
         var filler = new Filler<User>();
         filler.Setup().OnType<IEnumerable<Essay>>().IgnoreIt();
-
+        
         return filler;
     }
 }

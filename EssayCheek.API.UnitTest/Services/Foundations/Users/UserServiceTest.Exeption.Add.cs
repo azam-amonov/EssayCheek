@@ -16,12 +16,14 @@ public partial class UserServiceTest
         User randomUser = CreateRandomUser();
         SqlException sqlException = GetSqlException();
 
-        var failedUserStorageException = new FailedUserStorageException(sqlException);
+        var failedUserStorageException = 
+                new FailedUserStorageException(sqlException);
 
-        var expectedUserStorageException = new UserDependencyException(sqlException);
+        var expectedUserStorageException = 
+                new UserDependencyException(failedUserStorageException);
 
         _storageBrokerMock.Setup(broker =>
-                        broker.InsertUserAsync(randomUser)).ThrowsAsync(sqlException);
+                broker.InsertUserAsync(randomUser)).ThrowsAsync(sqlException);
 
         // When
         ValueTask<User> addUserTask = _userService.AddUserAsync(randomUser);
@@ -30,19 +32,21 @@ public partial class UserServiceTest
                         await Assert.ThrowsAsync<UserDependencyException>(addUserTask.AsTask);
         
         // Then
-        actualUserDependencyException.Should().BeEquivalentTo(expectedUserStorageException);
+        actualUserDependencyException.Should()
+                .BeEquivalentTo(expectedUserStorageException);
 
+        _storageBrokerMock.Verify(broker 
+                => broker.InsertUserAsync(randomUser), Times.Once);
+        
         _loggingBrokerMock.Verify(broker => 
                     broker.LogCritical(It.Is(
-                        SameExceptionAs(expectedUserStorageException))),
-                                Times.Once);
+                        SameExceptionAs(expectedUserStorageException))), Times.Once);
         
         _loggingBrokerMock.VerifyNoOtherCalls();
         _storageBrokerMock.VerifyNoOtherCalls();
     }
 
     [Fact]
-
     public async Task ShouldThrowDependencyValidationExceptionOnAddIfDuplicateKeyErrorOccurredAndLogAsync()
     {
         // Given
@@ -50,7 +54,8 @@ public partial class UserServiceTest
         string someMessage = GteRandomString();
         var duplicateKeyException = new DuplicateKeyException(someMessage);
 
-        var alreadyExistsUserException = new AlreadyExistsUserException(duplicateKeyException);
+        var alreadyExistsUserException = 
+                new AlreadyExistsUserException(duplicateKeyException);
 
         var exceptedUserDependencyValidationException =
                 new UserDependencyValidationException(alreadyExistsUserException);
@@ -66,8 +71,7 @@ public partial class UserServiceTest
 
         _loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
-                        exceptedUserDependencyValidationException))),
-                Times.Once);
+                        exceptedUserDependencyValidationException))), Times.Once);
         
         _loggingBrokerMock.VerifyNoOtherCalls();
         _storageBrokerMock.VerifyNoOtherCalls();

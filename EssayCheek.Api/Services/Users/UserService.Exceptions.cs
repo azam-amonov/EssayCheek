@@ -14,7 +14,7 @@ public partial class UserService
         {
             return await returningUserFunction();
         }
-        catch (NullUserException nullUserException)
+        catch (UserNullException nullUserException)
         {
             throw CreateAndLogValidationException(nullUserException);
         }
@@ -31,7 +31,8 @@ public partial class UserService
 
     private UserValidationException CreateAndLogValidationException(Xeption exception)
     {
-        var userValidationException = new UserValidationException(exception);
+        var userValidationException = 
+            new UserValidationException(exception);
         
         _loggingBroker.LogError(userValidationException);
         return userValidationException;
@@ -39,7 +40,8 @@ public partial class UserService
     
     private UserDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
     {
-        var userDependencyException = new UserDependencyException(exception);
+        var userDependencyException = 
+                new UserDependencyException(exception);
         
         _loggingBroker.LogCritical(userDependencyException);
         return userDependencyException;

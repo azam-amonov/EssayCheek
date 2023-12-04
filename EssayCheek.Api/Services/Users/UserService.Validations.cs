@@ -17,14 +17,16 @@ public partial class UserService
 
     private static void ValidateUserIsNotNull(User user)
     {
-        if (user is null) 
-            throw new NullUserException();
+        if (user is null)
+        {
+            throw new UserNullException();
+        }
     }
 
     private static dynamic IsInvalid(Guid id) => new
     {
-                    Comdition = id == Guid.Empty,
-                    Message = "Id is required."
+        Comdition = id == Guid.Empty,
+        Message = "Id is required."
     };
     
     private static dynamic IsInvalid(string text) => new
