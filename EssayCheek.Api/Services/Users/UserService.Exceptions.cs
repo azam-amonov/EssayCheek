@@ -19,10 +19,10 @@ public partial class UserService
         {
             throw CreateAndLogValidationException(nullUserException);
         }
-        // catch (InvalidUserException invalidUserException)
-        // {
-        //     throw CreateAndLogValidationException(invalidUserException);
-        // }
+        catch (InvalidUserException invalidUserException)
+        {
+            throw CreateAndLogValidationException(invalidUserException);
+        }
         catch (SqlException sqlException)
         {
             var userStorageException =
