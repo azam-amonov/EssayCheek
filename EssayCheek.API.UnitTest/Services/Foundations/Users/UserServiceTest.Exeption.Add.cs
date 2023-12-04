@@ -51,7 +51,6 @@ public partial class UserServiceTest
     {
         // Given
         User randomUser = CreateRandomUser();
-        User alreadyExists = randomUser;
         string randomMessage = GteRandomString();
         
         var duplicateKeyException = new DuplicateKeyException(randomMessage);
@@ -84,5 +83,38 @@ public partial class UserServiceTest
         _dateTimeBrokerMock.VerifyNoOtherCalls();
         _loggingBrokerMock.VerifyNoOtherCalls();
         _storageBrokerMock.VerifyNoOtherCalls();
+    }
+
+    [Fact]
+    public async Task ShouldThrowServiceExceptionOnAddIfServiceErrorOccuredAndLogAsync()
+    {
+            // Given
+            User randomUser = CreateRandomUser();
+            var serviceException = new Exception();
+            var failedUserServiceException = new FailedUserServiceException(serviceException);
+
+            var expectedUserServiceException = new UserServiceException(failedUserServiceException);
+
+            _storageBrokerMock.Setup(broker =>
+                        broker.InsertUserAsync(randomUser)).ThrowsAsync(serviceException);
+            
+            // When
+
+            ValueTask<User> addUserTask =  _userService.AddUserAsync(randomUser);
+
+            UserServiceException actualUserServiceException =
+                await Assert.ThrowsAsync<UserServiceException>(addUserTask.AsTask);
+            
+            // Then
+            actualUserServiceException.Should().BeEquivalentTo(expectedUserServiceException);
+            
+            _loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                        expectedUserServiceException))), Times.Once);
+            
+            _storageBrokerMock.Verify(broker => broker.InsertUserAsync(randomUser), Times.Once);
+            
+            _loggingBrokerMock.VerifyNoOtherCalls();
+            _storageBrokerMock.VerifyNoOtherCalls();
     }
 }
