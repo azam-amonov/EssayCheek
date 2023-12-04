@@ -41,7 +41,7 @@ public partial class UserService
 
         foreach ((dynamic rule, string parameter)in validations)
         {
-            if (rule.Codition)
+            if (rule.Condition)
             {
                 invalidUserException.UpsertDataList(
                     key: parameter,
