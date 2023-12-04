@@ -30,6 +30,10 @@ public partial class UserService
          
             throw CreateAndLogCriticalDependencyException(userStorageException);
         }
+        catch (NotFoundUserException notFoundUserException)
+        {
+            throw CreateAndLogValidationException(notFoundUserException);
+        }
         catch (DuplicateKeyException duplicateKeyException)
         {
             var alreadyExistsUserException = new

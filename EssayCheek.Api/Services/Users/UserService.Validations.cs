@@ -17,7 +17,7 @@ public partial class UserService
        
     }
 
-    public void ValidateUserId(Guid id) =>
+    private static void ValidateUserId(Guid id) =>
                     Validate((Rule: IsInvalid(id), Parameter: nameof(User.Id)));
     
     private static void ValidateUserIsNotNull(User user)
@@ -28,6 +28,13 @@ public partial class UserService
         }
     }
 
+    private static void ValidateStorageUser(User maybeUser, Guid userId)
+    {
+        if (maybeUser is null)
+        {
+            throw new NotFoundUserException(userId);
+        }
+    }
     private static dynamic IsInvalid(Guid id) => new
     {
         Condition = id == Guid.Empty,

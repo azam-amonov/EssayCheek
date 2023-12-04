@@ -56,9 +56,11 @@ public partial class UserServiceTest
             Guid someId = Guid.NewGuid();
             var serviceException = new Exception();
 
-            var failedUserServiceException = new FailedUserServiceException(serviceException);
+            var failedUserServiceException = 
+                            new FailedUserServiceException(serviceException);
 
-            var expectedUserServiceException = new UserServiceException(failedUserServiceException);
+            var expectedUserServiceException = 
+                            new UserServiceException(failedUserServiceException);
 
             _storageBrokerMock.Setup(broker => 
                 broker.SelectUserByIdAsync(It.IsAny<Guid>()))
@@ -74,16 +76,14 @@ public partial class UserServiceTest
             actualUserServiceException.Should().BeEquivalentTo(expectedUserServiceException);
             
             _storageBrokerMock.Verify(broker =>
-                broker.SelectUserByIdAsync(It.IsAny<Guid>()), Times.Once);
+                broker.SelectUserByIdAsync(It.IsAny<Guid>()), Times.Once());
             
             _loggingBrokerMock.Verify( broker => 
                     broker.LogError(It.Is(SameExceptionAs(
-                                expectedUserServiceException))), Times.Once );
+                                expectedUserServiceException))), Times.Once);
             
             _storageBrokerMock.VerifyNoOtherCalls();
             _loggingBrokerMock.VerifyNoOtherCalls();
             _dateTimeBrokerMock.VerifyNoOtherCalls();
-            
     }
-    
 }

@@ -30,7 +30,11 @@ public partial class UserService : IUserService
     TryCatch(async () =>
     {
         ValidateUserId(userId);
-        return (await _storageBroker.SelectUserByIdAsync(userId))!;
+        User? maybeUser = await _storageBroker.SelectUserByIdAsync(userId);
+        
+        ValidateStorageUser(maybeUser!, userId);
+        
+        return maybeUser!;
     });
 
     public IQueryable<User> GetAllUsersAsync() => _storageBroker.SelectAllUsers();
