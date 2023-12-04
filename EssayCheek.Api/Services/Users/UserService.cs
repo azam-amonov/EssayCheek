@@ -26,7 +26,16 @@ public partial class UserService : IUserService
     });
 
 
-    public async ValueTask<User?> GetUserByIdAsync(Guid id) => await _storageBroker.SelectUserByIdAsync(id);
+    public ValueTask<User> RetrieveUserByIdAsync(Guid userId) =>
+    TryCatch(async () =>
+    {
+        ValidateUserId(userId);
+        User? maybeUser = await _storageBroker.SelectUserByIdAsync(userId);
+        
+        ValidateStorageUser(maybeUser!, userId);
+        
+        return maybeUser!;
+    });
 
     public IQueryable<User> GetAllUsersAsync() => _storageBroker.SelectAllUsers();
 

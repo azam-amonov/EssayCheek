@@ -27,14 +27,18 @@ public partial class UserService
         {
             var userStorageException =
                             new FailedUserStorageException(sqlException);
-
+         
             throw CreateAndLogCriticalDependencyException(userStorageException);
+        }
+        catch (NotFoundUserException notFoundUserException)
+        {
+            throw CreateAndLogValidationException(notFoundUserException);
         }
         catch (DuplicateKeyException duplicateKeyException)
         {
             var alreadyExistsUserException = new
                             AlreadyExistsUserException(duplicateKeyException);
-
+        
             throw CreateAndLogDependencyValidationException(alreadyExistsUserException);
         }
         catch (Exception exception)

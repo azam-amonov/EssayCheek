@@ -1,3 +1,5 @@
+using System.Data;
+using System.Reflection.Metadata;
 using EssayCheek.Api.Model.Foundation.Users;
 using EssayCheek.Api.Model.Foundation.Users.Exceptions;
 
@@ -15,6 +17,9 @@ public partial class UserService
        
     }
 
+    private static void ValidateUserId(Guid id) =>
+                    Validate((Rule: IsInvalid(id), Parameter: nameof(User.Id)));
+    
     private static void ValidateUserIsNotNull(User user)
     {
         if (user is null)
@@ -23,6 +28,13 @@ public partial class UserService
         }
     }
 
+    private static void ValidateStorageUser(User maybeUser, Guid userId)
+    {
+        if (maybeUser is null)
+        {
+            throw new NotFoundUserException(userId);
+        }
+    }
     private static dynamic IsInvalid(Guid id) => new
     {
         Condition = id == Guid.Empty,
