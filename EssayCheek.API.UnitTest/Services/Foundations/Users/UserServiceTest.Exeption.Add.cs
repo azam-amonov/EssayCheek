@@ -14,7 +14,7 @@ public partial class UserServiceTest
     {
         // Given
         User randomUser = CreateRandomUser();
-        SqlException sqlException = GetSqlException();
+        SqlException sqlException = CreateSqlException();
 
         var failedUserStorageException = 
                 new FailedUserStorageException(sqlException);

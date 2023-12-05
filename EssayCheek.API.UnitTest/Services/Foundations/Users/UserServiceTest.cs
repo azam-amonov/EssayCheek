@@ -82,7 +82,7 @@ public partial class UserServiceTest
     private static DateTimeOffset GetRandomDateTime() =>
                     new DateTimeRange(earliestDate: DateTime.UnixEpoch).GetValue();
     
-    private static SqlException GetSqlException() =>
+    private static SqlException CreateSqlException() =>
                     (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
     private static int GetRandomNegativeNumber() => 

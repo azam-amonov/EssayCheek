@@ -1,8 +1,5 @@
-using System.Data;
-using System.Reflection.Metadata;
 using EssayCheek.Api.Model.Foundation.Users;
 using EssayCheek.Api.Model.Foundation.Users.Exceptions;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 
 namespace EssayCheek.Api.Services.Users;
 
