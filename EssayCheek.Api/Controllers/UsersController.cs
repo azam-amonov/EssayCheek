@@ -27,7 +27,15 @@ public class UsersController : RESTFulController
     [HttpGet] 
     public ActionResult<IQueryable<User>> GetAllUsers()
     {
-        await _userService.AddUserAsync(user);
+        IQueryable<User> retrievedUsers = _userService.RetrieveAllUsers();
+        return Ok(retrievedUsers);
+    }
+
+    [HttpGet("{userId}")]
+    public async ValueTask<ActionResult<User>> GetUserByIdAsync(Guid userId)
+    {
+        User user = await _userService.RetrieveUserByIdAsync(userId);
+
         return Ok(user);
     }
 

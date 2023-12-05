@@ -44,11 +44,12 @@ public partial class UserService : IUserService
     TryCatch(async () =>
     {
        ValidateUserOnModify(user);
-       User? updateUser = await _storageBroker.SelectUserByIdAsync(user.Id);
        
+       User? updateUser = await _storageBroker.SelectUserByIdAsync(user.Id);
+      
        ValidateStorageUser(updateUser!, user.Id);
 
-       return await _storageBroker.UpdateUserAsync(updateUser!);
+       return await _storageBroker.UpdateUserAsync(user);
     });
 
     public ValueTask<User> RemoveUserByIdAsync(Guid userId) =>
