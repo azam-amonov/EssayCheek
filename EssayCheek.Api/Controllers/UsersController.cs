@@ -33,7 +33,6 @@ public class UsersController : RESTFulController
     public async ValueTask<ActionResult<User>> GetUserByIdAsync(Guid userId)
     {
         User user = await _userService.RetrieveUserByIdAsync(userId);
-
         return Ok(user);
     }
 
@@ -48,7 +47,6 @@ public class UsersController : RESTFulController
     public async ValueTask<ActionResult<User>> DeleteUserAsync(Guid userId)
     {
         User user = await _userService.RemoveUserByIdAsync(userId);
-        
         return Ok(user);
     }
 }

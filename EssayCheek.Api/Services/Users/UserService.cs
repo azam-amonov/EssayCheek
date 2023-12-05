@@ -25,7 +25,6 @@ public partial class UserService : IUserService
         return await _storageBroker.InsertUserAsync(user);
     });
 
-
     public ValueTask<User> RetrieveUserByIdAsync(Guid userId) =>
     TryCatch(async () =>
     {
@@ -44,7 +43,6 @@ public partial class UserService : IUserService
     TryCatch(async () =>
     {
        ValidateUserOnModify(user);
-       
        User? updateUser = await _storageBroker.SelectUserByIdAsync(user.Id);
       
        ValidateStorageUser(updateUser!, user.Id);
@@ -61,6 +59,5 @@ public partial class UserService : IUserService
         ValidateStorageUser(maybeUser!, userId);
 
         return await _storageBroker.DeleteUserAsync(maybeUser!);
-
     });
 }
