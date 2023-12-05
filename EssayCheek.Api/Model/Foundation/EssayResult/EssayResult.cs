@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using EssayCheek.Api.Model.Essays;
+using EssayCheek.Api.Model.Foundation.Essays;
 
 namespace EssayCheek.Api.Model.EssayResult;
 

@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using EssayCheek.Api.Model.Foundation.Users;
 
-namespace EssayCheek.Api.Model.Essays;
+namespace EssayCheek.Api.Model.Foundation.Essays;
 
 public class Essay
 {
