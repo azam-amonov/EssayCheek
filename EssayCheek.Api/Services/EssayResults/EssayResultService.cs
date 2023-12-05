@@ -20,8 +20,12 @@ public partial class EssayResultService: IEssayResultService
 
     public IQueryable<EssayResult> GetAllEssayResults() => _storageBroker.SelectAllEssayResults();
 
-    public async ValueTask<EssayResult> AddEssayResultsAsync(EssayResult essayResult) =>
-                    throw new NotImplementedException();
+    public ValueTask<EssayResult> AddEssayResultsAsync(EssayResult essayResult) =>
+    TryCatch(async () =>
+    {
+        ValidateEssayResult(essayResult);
+        return await _storageBroker.InsertEssayResultAsync(essayResult);
+    });
 
     public async ValueTask<EssayResult> RemoveEssayResultsAsync(EssayResult essayResult) 
         => await _storageBroker.DeleteEssayResultAsync(essayResult);

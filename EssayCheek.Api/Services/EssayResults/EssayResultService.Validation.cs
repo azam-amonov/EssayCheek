@@ -5,9 +5,9 @@ namespace EssayCheek.Api.Services.EssayResults;
 
 public partial class EssayResultService
 {
-    private static void ValidateEssay(EssayResult essayResult )
+    private static void ValidateEssayResult(EssayResult essayResult )
     {
-        ValidateEssayIsNotNull(essayResult);
+        ValidateEssayResultIsNotNull(essayResult);
         Validate((Rule: IsInvalid(essayResult.Id), Parameter: nameof(essayResult.Id)),
                         (Ruel: IsInvalid(essayResult.Feedback), Parameter: nameof(essayResult.Feedback)),
                         (Ruel: IsInvalid(essayResult.Score), Parameter: nameof(essayResult.Score)));
@@ -30,7 +30,7 @@ public partial class EssayResultService
                     Message = "Score is required"
     };
 
-    private static void ValidateEssayIsNotNull(EssayResult essayResult)
+    private static void ValidateEssayResultIsNotNull(EssayResult essayResult)
     {
         if (essayResult is null)
         {
