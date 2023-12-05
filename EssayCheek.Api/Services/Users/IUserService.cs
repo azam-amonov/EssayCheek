@@ -8,5 +8,5 @@ public interface IUserService
     ValueTask<User> RetrieveUserByIdAsync(Guid id);
     IQueryable<User> RetrieveAllUsers();
     ValueTask<User> ModifyUserAsync(User user);
-    ValueTask<User> RemoveUserAsync(User id);   
+    ValueTask<User> RemoveUserByIdAsync(Guid id);   
 }
