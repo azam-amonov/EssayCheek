@@ -11,7 +11,7 @@ public partial class UserServiceTest
     public void ShouldThrowCriticalDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogIt()
     {
         // given
-        SqlException sqlException = GetSqlException();
+        SqlException sqlException = CreateSqlException();
 
         var failedStorageException = new FailedUserStorageException(sqlException);
 

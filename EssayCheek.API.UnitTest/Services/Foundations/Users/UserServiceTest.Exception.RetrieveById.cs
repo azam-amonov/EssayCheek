@@ -13,7 +13,7 @@ public partial class UserServiceTest
     {
         // given
         Guid someId = Guid.NewGuid();
-        SqlException sqlException = GetSqlException();
+        SqlException sqlException = CreateSqlException();
 
         var failedUserStorageException = 
                 new FailedUserStorageException(sqlException);
