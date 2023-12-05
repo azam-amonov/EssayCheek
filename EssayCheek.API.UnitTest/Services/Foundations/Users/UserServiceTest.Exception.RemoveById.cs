@@ -14,27 +14,23 @@ public partial class UserServiceTest
         // given
         Guid someUserId = Guid.NewGuid();
 
-        var databaseUpdateConcurrencyException = 
-                        new DbUpdateConcurrencyException();
+        var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
         
-        var lockedUserException = 
-                        new LockedUserException(databaseUpdateConcurrencyException);
+        var lockedUserException = new LockedUserException(databaseUpdateConcurrencyException);
 
-        var expectedUserDependencyValidationException = 
-                        new UserDependencyValidationException(lockedUserException);
+        var expectedUserDependencyValidationException = new UserDependencyValidationException(lockedUserException);
 
         _storageBrokerMock.Setup(broker => 
-                        broker.SelectUserByIdAsync(It.IsAny<Guid>()))
+                broker.SelectUserByIdAsync(It.IsAny<Guid>()))
                         .ThrowsAsync(databaseUpdateConcurrencyException);
         
         // when
-
         ValueTask<User> removedUserByIdTask =
-                        _userService.RetrieveUserByIdAsync(someUserId);
+                _userService.RetrieveUserByIdAsync(someUserId);
 
         UserDependencyValidationException actualUserDependencyValidationException =
-                        await Assert.ThrowsAsync<UserDependencyValidationException>(
-                                        removedUserByIdTask.AsTask);
+                await Assert.ThrowsAsync<UserDependencyValidationException>(
+                            removedUserByIdTask.AsTask);
         
         // then
         actualUserDependencyValidationException.Should().
@@ -55,6 +51,5 @@ public partial class UserServiceTest
         _storageBrokerMock.VerifyNoOtherCalls();
         _loggingBrokerMock.VerifyNoOtherCalls();
         _dateTimeBrokerMock.VerifyNoOtherCalls();
-        
     }
 }

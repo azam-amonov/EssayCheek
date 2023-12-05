@@ -12,7 +12,6 @@ public partial class UserService
                 (Rule: IsInvalid(user.FirstName), Parameter: nameof(User.FirstName)),
                 (Rule: IsInvalid(user.LastName), Parameter: nameof(User.LastName)),
                 (Rule: IsInvalid(user.EmailAddress), Parameter: nameof(User.EmailAddress)));
-       
     }
 
     private void ValidateUserOnModify(User user)
@@ -30,17 +29,13 @@ public partial class UserService
     private static void ValidateUserIsNotNull(User user)
     {
         if (user is null)
-        {
             throw new UserNullException();
-        }
     }
 
     private static void ValidateStorageUser(User maybeUser, Guid userId)
     {
         if (maybeUser is null)
-        {
             throw new NotFoundUserException(userId);
-        }
     }
     private static dynamic IsInvalid(Guid id) => new
     {
@@ -54,33 +49,6 @@ public partial class UserService
         Message = "Text is required"
     };
 
-    private static dynamic IsInvalid(DateTimeOffset date) => new
-    {
-        Condition = date == default,
-        Message = "Date is required"
-    };
-    private dynamic IsNotRecent(DateTimeOffset date) => new
-    {
-                    Condition = IsDateNotRecent(date),
-                    Message = "Date is not recent"
-    };
-    
-    private bool IsDateNotRecent(DateTimeOffset date)
-    {
-        DateTimeOffset currentDateTime = _dateTimeBroker.GetCurrentDateTimeOffset();
-        TimeSpan timeDifference = currentDateTime.Subtract(date);
-
-        return timeDifference.TotalSeconds is > 60 or < 0;
-    }
-    
-    private static dynamic IsSame(
-                    DateTimeOffset firstDate,
-                    DateTimeOffset secondDate,
-                    string secondDateName) => new
-    {
-                    Condition = firstDate == secondDate,
-                    Message = $"Date is the same as {secondDateName}"
-    };
     private static void Validate(params (dynamic Rule, string Parameter)[] validations)
     {
         var invalidUserException = new InvalidUserException();
@@ -94,7 +62,6 @@ public partial class UserService
                     value: rule.Message);
             }
         }
-        
         invalidUserException.ThrowIfContainsErrors();
     }
 }

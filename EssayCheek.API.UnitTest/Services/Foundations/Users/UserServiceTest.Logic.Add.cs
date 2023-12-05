@@ -16,8 +16,8 @@ public partial class UserServiceTest
         User persistedUser = inputUser;
         User expectedUser = persistedUser.DeepClone();
 
-        _storageBrokerMock.Setup(broker
-                        => broker.InsertUserAsync(inputUser)).ReturnsAsync(persistedUser);
+        _storageBrokerMock.Setup(broker =>
+                broker.InsertUserAsync(inputUser)).ReturnsAsync(persistedUser);
         
         // When
         User actualUser = await _userService.AddUserAsync(inputUser);

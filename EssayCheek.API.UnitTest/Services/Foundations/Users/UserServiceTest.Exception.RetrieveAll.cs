@@ -14,28 +14,28 @@ public partial class UserServiceTest
         SqlException sqlException = CreateSqlException();
 
         var failedStorageException = new FailedUserStorageException(sqlException);
-
+        
         var expectedUserDependencyException = new UserDependencyException(failedStorageException);
 
         _storageBrokerMock.Setup(broker => 
-                    broker.SelectAllUsers())
-                        .Throws(sqlException);
+                broker.SelectAllUsers()).Throws(sqlException);
         
         // when
         Action retrieveAllUsersAction = () =>
-                        _userService.RetrieveAllUsers();
+                _userService.RetrieveAllUsers();
 
         UserDependencyException actualExceptionDependencyException =
-                        Assert.Throws<UserDependencyException>(retrieveAllUsersAction);
+                Assert.Throws<UserDependencyException>(retrieveAllUsersAction);
         
         // then
         actualExceptionDependencyException.Should().BeEquivalentTo(expectedUserDependencyException);
         
-        _storageBrokerMock.Verify(broker => broker.SelectAllUsers(), Times.Once);
+        _storageBrokerMock.Verify(broker =>
+                broker.SelectAllUsers(), Times.Once);
 
         _loggingBrokerMock.Verify(broker => 
-                        broker.LogCritical(It.Is(SameExceptionAs(
-                        expectedUserDependencyException))), Times.Once);
+                broker.LogCritical(It.Is(SameExceptionAs(
+                expectedUserDependencyException))), Times.Once);
         
         _storageBrokerMock.VerifyNoOtherCalls();
         _loggingBrokerMock.VerifyNoOtherCalls();

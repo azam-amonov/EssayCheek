@@ -14,8 +14,9 @@ public partial class UserServiceTest
         IQueryable<User> storageUsers = randomUsers;
         IQueryable<User> expectedUsers = storageUsers;
 
-        _storageBrokerMock.Setup(broker 
-                        => broker.SelectAllUsers()).Returns(storageUsers);
+        _storageBrokerMock.Setup(broker =>
+                broker.SelectAllUsers()).Returns(storageUsers);
+        
         // when
         IQueryable<User> actualUsers = _userService.RetrieveAllUsers();
         

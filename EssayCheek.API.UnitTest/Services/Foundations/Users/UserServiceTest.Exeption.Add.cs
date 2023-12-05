@@ -29,7 +29,7 @@ public partial class UserServiceTest
         ValueTask<User> addUserTask = _userService.AddUserAsync(randomUser);
 
         UserDependencyException actualUserDependencyException =
-                        await Assert.ThrowsAsync<UserDependencyException>(addUserTask.AsTask);
+                await Assert.ThrowsAsync<UserDependencyException>(addUserTask.AsTask);
         
         // Then
         actualUserDependencyException.Should()

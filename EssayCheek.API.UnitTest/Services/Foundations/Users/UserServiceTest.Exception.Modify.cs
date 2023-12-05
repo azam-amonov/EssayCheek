@@ -27,26 +27,26 @@ public partial class UserServiceTest
                 broker.SelectUserByIdAsync(userId)).ReturnsAsync(someUser);
         
         _storageBrokerMock.Setup(broker => 
-                        broker.UpdateUserAsync(someUser)).ThrowsAsync(sqlException);
+                broker.UpdateUserAsync(someUser)).ThrowsAsync(sqlException);
         
         //when
         ValueTask<User> modifiedUserTask =
                 _userService.ModifyUserAsync(randomUser);
 
         UserDependencyException actualUserDependencyException =
-                        await Assert.ThrowsAsync<UserDependencyException>(modifiedUserTask.AsTask);
+                await Assert.ThrowsAsync<UserDependencyException>(modifiedUserTask.AsTask);
 
         //then
         actualUserDependencyException.Should().BeEquivalentTo(expectedUserDependencyException);
         
         _storageBrokerMock.Verify(broker =>
-                        broker.SelectUserByIdAsync(userId), Times.Once);
+                broker.SelectUserByIdAsync(userId), Times.Once);
         
         _storageBrokerMock.Verify(broker =>
-                        broker.UpdateUserAsync(someUser), Times.Once);
+                broker.UpdateUserAsync(someUser), Times.Once);
         
         _loggingBrokerMock.Verify(broker => 
-                        broker.LogCritical(It.Is(
+                broker.LogCritical(It.Is(
                         SameExceptionAs(expectedUserDependencyException))),Times.Once);
 
         _storageBrokerMock.VerifyNoOtherCalls();

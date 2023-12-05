@@ -55,12 +55,11 @@ public partial class UserService : IUserService
     TryCatch(async () =>
     {
         ValidateUserId(userId);
-
-        User maybeUser = await _storageBroker.SelectUserByIdAsync(userId);
+        User? maybeUser = await _storageBroker.SelectUserByIdAsync(userId);
         
-        ValidateStorageUser(maybeUser, userId);
+        ValidateStorageUser(maybeUser!, userId);
 
-        return await _storageBroker.DeleteUserAsync(maybeUser);
+        return await _storageBroker.DeleteUserAsync(maybeUser!);
 
     });
 }
