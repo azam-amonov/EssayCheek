@@ -1,5 +1,4 @@
 using EFxceptions.Models.Exceptions;
-using EssayCheek.Api.Brokers.StorageBroker;
 using EssayCheek.Api.Model.Foundation.Users;
 using EssayCheek.Api.Model.Foundation.Users.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -95,7 +94,6 @@ public partial class UserService
         _loggingBroker.LogError(userValidationException);
         return userValidationException;
     }
-    
     private UserDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
     {
         var userDependencyException = 
