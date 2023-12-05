@@ -11,7 +11,7 @@ public partial class UserServiceTest
     public async Task ShouldThrowsValidationExceptionOnRemoveIfInvalidAndLogItAsync()
     {
         // given
-        Guid invalidUserId = Guid.NewGuid();
+        Guid invalidUserId = Guid.Empty;
 
         var invalidUserException = new InvalidUserException();
 
@@ -33,16 +33,15 @@ public partial class UserServiceTest
         actualUserValidationException.Should().BeEquivalentTo(expectedUserValidationException);
 
         _loggingBrokerMock.Verify(broker => broker.LogError(
-                                        It.Is(SameExceptionAs(expectedUserValidationException))),
+            It.Is(SameExceptionAs(expectedUserValidationException))),
                         Times.Once);
 
         _storageBrokerMock.Verify(broker =>
-                                        broker.DeleteUserAsync(It.IsAny<User>()),
+                    broker.DeleteUserAsync(It.IsAny<User>()),
                         Times.Never);
 
         _loggingBrokerMock.VerifyNoOtherCalls();
         _storageBrokerMock.VerifyNoOtherCalls();
         _dateTimeBrokerMock.VerifyNoOtherCalls();
-
     }
 }
