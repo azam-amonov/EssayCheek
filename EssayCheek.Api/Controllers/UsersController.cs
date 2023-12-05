@@ -1,7 +1,6 @@
 using EssayCheek.Api.Model.Foundation.Users;
 using EssayCheek.Api.Services.Users;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using RESTFulSense.Controllers;
 
 namespace EssayCheek.Api.Controllers;
