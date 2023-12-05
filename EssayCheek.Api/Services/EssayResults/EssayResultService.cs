@@ -18,7 +18,7 @@ public partial class EssayResultService: IEssayResultService
         _dateTimeBroker = dateTimeBroker;
     }
 
-    public IQueryable<EssayResult> GetAllEssayResults() => _storageBroker.SelectAllEssayResults();
+    public IQueryable<EssayResult> RetrieveAllEssayResults() => _storageBroker.SelectAllEssayResults();
 
     public ValueTask<EssayResult> AddEssayResultsAsync(EssayResult essayResult) =>
     TryCatch(async () =>
