@@ -12,10 +12,8 @@ public class UsersController : RESTFulController
 {
     private readonly IUserService _userService;
 
-    public UserController(IUserService userService)
-    {
+    public UsersController(IUserService userService) =>
         _userService = userService;
-    }
 
     [HttpPost]
     public async ValueTask<ActionResult<User>> PostUserAsync(User user)
@@ -39,10 +37,18 @@ public class UsersController : RESTFulController
         return Ok(user);
     }
 
-    [HttpGet]
-    public async ValueTask<IActionResult> GetAsync()
+    [HttpPut]
+    public async ValueTask<ActionResult<User>> PutUserAsync(User user)
     {
-        var data = await _userService.RetrieveAllUsers().ToListAsync();
-        return Ok(data);
+        User modifiedUser = await _userService.ModifyUserAsync(user);
+        return Ok(modifiedUser);
+    }
+
+    [HttpDelete("{userId}")]
+    public async ValueTask<ActionResult<User>> DeleteUserAsync(Guid userId)
+    {
+        User user = await _userService.RemoveUserByIdAsync(userId);
+        
+        return Ok(user);
     }
 }
