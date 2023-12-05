@@ -25,9 +25,15 @@ public partial class EssayService : IEssayService
         return await _storageBroker.InsertEssayAsync(essay);
     });
     
-    public IQueryable<Essay> GetAllAEssays() => _storageBroker.SelectAllEssays();
+    public IQueryable<Essay> RetrieveAllEssays() => _storageBroker.SelectAllEssays();
 
-    public async ValueTask<Essay?> GetByIdAsync(Guid id) =>  await _storageBroker.SelectEssayByIdAsync(id);
+    public async ValueTask<Essay?> RetrieveGetByIdAsync(Guid id) =>  await _storageBroker.SelectEssayByIdAsync(id);
 
-    public async ValueTask<Essay> DeleteEssayAsync(Essay essay) => await _storageBroker.DeleteEssayAsync(essay);
+    public async ValueTask<Essay?> RemoveEssayAsync(Guid id)
+    {
+        Essay? retrievedEssay = await _storageBroker.SelectEssayByIdAsync(id);
+        await _storageBroker.DeleteEssayAsync(retrievedEssay!);
+        
+        return retrievedEssay;
+    }
 }
