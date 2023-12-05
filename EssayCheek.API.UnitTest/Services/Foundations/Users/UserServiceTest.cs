@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using EssayCheek.Api.Brokers.DateTimes;
@@ -45,35 +44,66 @@ public partial class UserServiceTest
         };
     }
 
-    private static int GetRandomNumber() =>
-            new IntRange(min: 9, max: 99).GetValue();
+    public static TheoryData<int> InvalidSeconds()
+    {
+        int secondsInPast = -1 * new IntRange(
+            min: 60,
+            max: short.MaxValue).GetValue();
+        
+        int secondsInFuture = -1 * new IntRange(
+            min: 60,
+            max: short.MaxValue).GetValue();
+
+        return new TheoryData<int>
+        {
+            secondsInPast,
+            secondsInFuture
+        };
+    }
     
-    private static int GetRandomNegativeNumber() => 
-            -1 * new IntRange(min: 9, max: 99).GetValue();
-    
-    private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
-            actualException => actualException.SameExceptionAs(expectedException);
-
-    private static SqlException GetSqlException() =>
-            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
-
-    private static string GteRandomString() =>
-            new MnemonicString(wordCount: GetRandomNumber()).GetValue();
-
-
     private static IQueryable<User> CreateRandomUsers()
     {
-        return CreateUserFiller()
-            .Create(count: GetRandomNumber())
-            .AsQueryable();
+        return CreateUserFiller(dates: GetRandomDateTimeOffset())
+            .Create(count: GetRandomNumber()).AsQueryable();
+    }
+    
+    private static string GteRandomString() =>
+                    new MnemonicString(wordCount: GetRandomNumber()).GetValue();
+    
+    private static int GetRandomNumber() =>
+            new IntRange(min: 9, max: 99).GetValue();
+
+    private static DateTimeOffset GetRandomDateTimeOffset() =>
+                    new DateTimeRange(earliestDate: DateTime.UnixEpoch).GetValue();
+    
+    private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
+                    actualException => actualException.SameExceptionAs(expectedException);
+    
+    private static DateTimeOffset GetRandomDateTime() =>
+                    new DateTimeRange(earliestDate: DateTime.UnixEpoch).GetValue();
+    
+    private static SqlException GetSqlException() =>
+                    (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+
+    private static int GetRandomNegativeNumber() => 
+                    -1 * new IntRange(min: 9, max: 99).GetValue();
+    
+    private static User CreateRandomModifyUser()
+    {
+        User randomUser = CreateRandomUser();
+        return randomUser;
     }
 
     private static User CreateRandomUser() =>
-                    CreateUserFiller().Create();
+                    CreateUserFiller(GetRandomDateTime()).Create();
 
-    private static Filler<User> CreateUserFiller()
+    private static User CreateRandomUser(DateTimeOffset dates) => 
+                    CreateUserFiller(dates).Create();
+    
+    private static Filler<User> CreateUserFiller(DateTimeOffset dates)
     {
         var filler = new Filler<User>();
+        filler.Setup().OnType<DateTimeOffset>().Use(dates);
         filler.Setup().OnType<IEnumerable<Essay>>().IgnoreIt();
         
         return filler;
