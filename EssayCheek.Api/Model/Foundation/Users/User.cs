@@ -9,6 +9,8 @@ public class User
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string EmailAddress { get; set; }
+    public DateTimeOffset CreatedDate { get; set; }
+    public DateTimeOffset UpdatedDate { get; set; }
 
     [JsonIgnore] 
     public virtual IEnumerable<Essay>? Essays {get; set; }
