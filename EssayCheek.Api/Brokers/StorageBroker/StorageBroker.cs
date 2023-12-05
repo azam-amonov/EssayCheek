@@ -1,5 +1,5 @@
 using EFxceptions;
-using EssayCheek.Api.Model.EssayResult;
+using EssayCheek.Api.Model.Foundation.EssayResult;
 using EssayCheek.Api.Model.Foundation.Essays;
 using EssayCheek.Api.Model.Foundation.Users;
 using Microsoft.EntityFrameworkCore;
