@@ -1,7 +1,6 @@
 using EssayCheek.Api.Brokers.DateTimes;
 using EssayCheek.Api.Brokers.Logging;
 using EssayCheek.Api.Brokers.StorageBroker;
-using EssayCheek.Api.Model.EssayResult;
 using EssayCheek.Api.Services.EssayResults;
 using EssayCheek.Api.Services.Essays;
 using EssayCheek.Api.Services.Users;
