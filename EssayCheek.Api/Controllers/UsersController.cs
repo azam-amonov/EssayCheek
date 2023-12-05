@@ -2,12 +2,13 @@ using EssayCheek.Api.Model.Foundation.Users;
 using EssayCheek.Api.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RESTFulSense.Controllers;
 
 namespace EssayCheek.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController : ControllerBase
+public class UsersController : RESTFulController
 {
     private readonly IUserService _userService;
 
@@ -17,7 +18,14 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async ValueTask<IActionResult> CreateAsync(User user)
+    public async ValueTask<ActionResult<User>> PostUserAsync(User user)
+    {
+        User addedUser = await _userService.AddUserAsync(user);
+        return Created(addedUser);
+    }
+
+    [HttpGet] 
+    public ActionResult<IQueryable<User>> GetAllUsers()
     {
         await _userService.AddUserAsync(user);
         return Ok(user);
