@@ -7,6 +7,7 @@ namespace EssayCheek.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+
 public class UsersController : RESTFulController
 {
     private readonly IUserService _userService;
