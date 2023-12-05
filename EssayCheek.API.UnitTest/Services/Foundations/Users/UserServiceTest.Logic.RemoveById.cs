@@ -37,7 +37,8 @@ public partial class UserServiceTest
                     => broker.SelectUserByIdAsync(inputUserId)
                         ,Times.Once);
         
-        _storageBrokerMock.Verify(broker => broker.DeleteUserAsync(expectedInputUser),
+        _storageBrokerMock.Verify(broker => 
+                    broker.DeleteUserAsync(expectedInputUser),
                         Times.Once);
         
         _storageBrokerMock.VerifyNoOtherCalls();

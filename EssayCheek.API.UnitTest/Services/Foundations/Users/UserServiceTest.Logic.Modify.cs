@@ -40,5 +40,4 @@ public partial class UserServiceTest
         _storageBrokerMock.VerifyNoOtherCalls();
         _loggingBrokerMock.VerifyNoOtherCalls();
     }
-    
 }

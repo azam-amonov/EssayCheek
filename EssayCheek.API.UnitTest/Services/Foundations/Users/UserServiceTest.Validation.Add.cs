@@ -15,13 +15,13 @@ public partial class UserServiceTest
         var nullUserException = new UserNullException();
 
         var expectedUserValidationException =
-                        new UserValidationException(nullUserException);
+                new UserValidationException(nullUserException);
         
         // When
         ValueTask<User> addUserTask = _userService.AddUserAsync(nullUser);
 
         UserValidationException actualUserValidationException =
-                        await Assert.ThrowsAsync<UserValidationException>(addUserTask.AsTask);
+                await Assert.ThrowsAsync<UserValidationException>(addUserTask.AsTask);
         
         // Then
         actualUserValidationException.Should()

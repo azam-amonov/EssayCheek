@@ -52,7 +52,7 @@ public partial class UserServiceTest
         User? noUser = null;
     
         var notFountUserException = 
-                    new NotFoundUserException(someUserId);
+                new NotFoundUserException(someUserId);
     
         var expectedUserValidationException = 
                 new UserValidationException(notFountUserException);

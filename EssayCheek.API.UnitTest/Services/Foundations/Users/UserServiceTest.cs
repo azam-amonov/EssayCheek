@@ -32,35 +32,6 @@ public partial class UserServiceTest
             loggingBroker:_loggingBrokerMock.Object);
     }
 
-    public static TheoryData<int> InvalidMinutes()
-    {
-        int minutesInFuture = GetRandomNumber();
-        int minutesInPast = GetRandomNegativeNumber();
-
-        return new TheoryData<int>
-        {
-            minutesInFuture,
-            minutesInPast
-        };
-    }
-
-    public static TheoryData<int> InvalidSeconds()
-    {
-        int secondsInPast = -1 * new IntRange(
-            min: 60,
-            max: short.MaxValue).GetValue();
-        
-        int secondsInFuture = -1 * new IntRange(
-            min: 60,
-            max: short.MaxValue).GetValue();
-
-        return new TheoryData<int>
-        {
-            secondsInPast,
-            secondsInFuture
-        };
-    }
-    
     private static IQueryable<User> CreateRandomUsers()
     {
         return CreateUserFiller(dates: GetRandomDateTimeOffset())
@@ -85,21 +56,9 @@ public partial class UserServiceTest
     private static SqlException CreateSqlException() =>
                     (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
-    private static int GetRandomNegativeNumber() => 
-                    -1 * new IntRange(min: 9, max: 99).GetValue();
-    
-    private static User CreateRandomModifyUser()
-    {
-        User randomUser = CreateRandomUser();
-        return randomUser;
-    }
-
     private static User CreateRandomUser() =>
                     CreateUserFiller(GetRandomDateTime()).Create();
 
-    private static User CreateRandomUser(DateTimeOffset dates) => 
-                    CreateUserFiller(dates).Create();
-    
     private static Filler<User> CreateUserFiller(DateTimeOffset dates)
     {
         var filler = new Filler<User>();

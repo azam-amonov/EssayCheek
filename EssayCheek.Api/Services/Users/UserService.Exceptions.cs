@@ -27,8 +27,7 @@ public partial class UserService
         }
         catch (SqlException sqlException)
         {
-            var userStorageException =
-                            new FailedUserStorageException(sqlException);
+            var userStorageException = new FailedUserStorageException(sqlException);
 
             throw CreateAndLogCriticalDependencyException(userStorageException);
         }
@@ -38,9 +37,7 @@ public partial class UserService
         }
         catch (DuplicateKeyException duplicateKeyException)
         {
-            var alreadyExistsUserException = new
-                            AlreadyExistsUserException(duplicateKeyException);
-
+            var alreadyExistsUserException = new AlreadyExistsUserException(duplicateKeyException);
             throw CreateAndLogDependencyValidationException(alreadyExistsUserException);
         }
         catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
@@ -64,13 +61,11 @@ public partial class UserService
         catch (SqlException sqlException)
         {
             var failedUserStorageException = new FailedUserStorageException(sqlException);
-            
             throw CreateAndLogCriticalDependencyException(failedUserStorageException);
         }
         catch (Exception exception)
         {
             var failedUserServiceException = new FailedUserServiceException(exception);
-            
             throw CreateAndLogServiceException(failedUserServiceException);
         }
     }
@@ -105,6 +100,5 @@ public partial class UserService
         
         return userDependencyException;
     }
-    
 }
 

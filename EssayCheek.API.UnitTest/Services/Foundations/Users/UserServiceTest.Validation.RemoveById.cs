@@ -16,18 +16,18 @@ public partial class UserServiceTest
         var invalidUserException = new InvalidUserException();
 
         invalidUserException.AddData(
-                        key: nameof(User.Id),
-                        values: "Id is required");
+                key: nameof(User.Id),
+                values: "Id is required");
 
         var expectedUserValidationException =
-                        new UserValidationException(invalidUserException);
+                new UserValidationException(invalidUserException);
 
         //when
         ValueTask<User> removedUserByIdTask =
-                        _userService.RetrieveUserByIdAsync(invalidUserId);
+                _userService.RetrieveUserByIdAsync(invalidUserId);
 
         UserValidationException actualUserValidationException =
-                        await Assert.ThrowsAsync<UserValidationException>(removedUserByIdTask.AsTask);
+                await Assert.ThrowsAsync<UserValidationException>(removedUserByIdTask.AsTask);
 
         //then
         actualUserValidationException.Should().BeEquivalentTo(expectedUserValidationException);

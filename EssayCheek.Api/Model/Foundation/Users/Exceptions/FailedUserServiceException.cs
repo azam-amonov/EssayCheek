@@ -6,7 +6,5 @@ public class FailedUserServiceException : Xeption
 {
     public FailedUserServiceException(Exception innerException)
             :base("Failed User Service Exception", innerException)
-    {
-        
-    }
+    { }
 }

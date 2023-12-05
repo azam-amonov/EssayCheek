@@ -26,7 +26,7 @@ public partial class UserServiceTest
         
         // when
         ValueTask<User> retrieveUserByIdTask =
-                        _userService.RetrieveUserByIdAsync(someId);
+                    _userService.RetrieveUserByIdAsync(someId);
 
         UserDependencyException actualUserDependencyException =
             await Assert.ThrowsAsync<UserDependencyException>(
@@ -46,7 +46,6 @@ public partial class UserServiceTest
         _storageBrokerMock.VerifyNoOtherCalls();
         _loggingBrokerMock.VerifyNoOtherCalls();
         _dateTimeBrokerMock.VerifyNoOtherCalls();
-
     }
 
     [Fact]
@@ -57,10 +56,10 @@ public partial class UserServiceTest
             var serviceException = new Exception();
 
             var failedUserServiceException = 
-                            new FailedUserServiceException(serviceException);
+                    new FailedUserServiceException(serviceException);
 
             var expectedUserServiceException = 
-                            new UserServiceException(failedUserServiceException);
+                    new UserServiceException(failedUserServiceException);
 
             _storageBrokerMock.Setup(broker => 
                 broker.SelectUserByIdAsync(It.IsAny<Guid>()))
