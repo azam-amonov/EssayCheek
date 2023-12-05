@@ -16,10 +16,10 @@ public partial class UserService
         {
             return await returningUserFunction();
         }
-        // catch (UserNullException nullUserException)
-        // {
-        //     throw CreateAndLogValidationException(nullUserException);
-        // }
+        catch (UserNullException nullUserException)
+        {
+            throw CreateAndLogValidationException(nullUserException);
+        }
         catch (InvalidUserException invalidUserException)
         {
             throw CreateAndLogValidationException(invalidUserException);
