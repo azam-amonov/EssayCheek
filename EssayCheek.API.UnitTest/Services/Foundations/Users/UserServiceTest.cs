@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using EssayCheek.Api.Brokers.DateTimes;
@@ -90,13 +88,9 @@ public partial class UserServiceTest
     private static int GetRandomNegativeNumber() => 
                     -1 * new IntRange(min: 9, max: 99).GetValue();
     
-    private static User CreateRandomModifyUser(DateTimeOffset dates)
+    private static User CreateRandomModifyUser()
     {
-        int randomDaysInPast = GetRandomNegativeNumber();
-        User randomUser = CreateRandomUser(dates);
-
-        randomUser.CreatedDate = randomUser.CreatedDate.AddDays(randomDaysInPast);
-
+        User randomUser = CreateRandomUser();
         return randomUser;
     }
 
