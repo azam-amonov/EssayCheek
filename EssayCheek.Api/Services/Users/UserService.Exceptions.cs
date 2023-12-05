@@ -2,6 +2,7 @@ using EFxceptions.Models.Exceptions;
 using EssayCheek.Api.Model.Foundation.Users;
 using EssayCheek.Api.Model.Foundation.Users.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Xeptions;
 
 namespace EssayCheek.Api.Services.Users;
@@ -28,7 +29,7 @@ public partial class UserService
         {
             var userStorageException =
                             new FailedUserStorageException(sqlException);
-         
+
             throw CreateAndLogCriticalDependencyException(userStorageException);
         }
         catch (NotFoundUserException notFoundUserException)
@@ -39,12 +40,17 @@ public partial class UserService
         {
             var alreadyExistsUserException = new
                             AlreadyExistsUserException(duplicateKeyException);
-        
+
             throw CreateAndLogDependencyValidationException(alreadyExistsUserException);
+        }
+        catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+        {
+            var lockedUserException = new LockedUserException(dbUpdateConcurrencyException);
+            throw CreateAndLogDependencyValidationException(lockedUserException);
         }
         catch (Exception exception)
         {
-            var failedUserException = new FailedUserServiceException(exception);
+            var failedUserException = new FailedUserServiceException(exception); 
             throw CreateAndLogServiceException(failedUserException);
         }
     }
@@ -72,34 +78,31 @@ public partial class UserService
     private Exception CreateAndLogServiceException(Xeption exception)
     {
         var userServiceException = new UserServiceException(exception);
-        
         _loggingBroker.LogError(userServiceException);
+        
         return userServiceException;
     }
 
     private Exception CreateAndLogDependencyValidationException(Xeption exception)
     {
-        var userValidationException = 
-                        new UserDependencyValidationException(exception);
+        var userValidationException = new UserDependencyValidationException(exception);
+        _loggingBroker.LogError(userValidationException); 
         
-        _loggingBroker.LogError(userValidationException);
         return userValidationException;
     }
 
     private UserValidationException CreateAndLogValidationException(Xeption exception)
     {
-        var userValidationException = 
-            new UserValidationException(exception);
-        
+        var userValidationException = new UserValidationException(exception);
         _loggingBroker.LogError(userValidationException);
+        
         return userValidationException;
     }
     private UserDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
     {
-        var userDependencyException = 
-                new UserDependencyException(exception);
-        
+        var userDependencyException = new UserDependencyException(exception);
         _loggingBroker.LogCritical(userDependencyException);
+        
         return userDependencyException;
     }
     

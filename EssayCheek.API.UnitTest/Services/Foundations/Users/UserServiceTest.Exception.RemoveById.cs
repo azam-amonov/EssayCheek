@@ -23,7 +23,8 @@ public partial class UserServiceTest
         var expectedUserDependencyValidationException = 
                         new UserDependencyValidationException(lockedUserException);
 
-        _storageBrokerMock.Setup(broker => broker.SelectUserByIdAsync(It.IsAny<Guid>()))
+        _storageBrokerMock.Setup(broker => 
+                        broker.SelectUserByIdAsync(It.IsAny<Guid>()))
                         .ThrowsAsync(databaseUpdateConcurrencyException);
         
         // when

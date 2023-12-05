@@ -56,7 +56,7 @@ public partial class UserService : IUserService
     {
         ValidateUserId(userId);
 
-        User? maybeUser = await _storageBroker.SelectUserByIdAsync(userId);
+        User maybeUser = await _storageBroker.SelectUserByIdAsync(userId);
         
         ValidateStorageUser(maybeUser, userId);
 
