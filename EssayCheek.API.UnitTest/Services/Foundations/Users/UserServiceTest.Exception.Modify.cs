@@ -44,5 +44,9 @@ public partial class UserServiceTest
 
         _dateTimeBrokerMock.Verify(broker =>
                         broker.GetCurrentDateTimeOffset(), Times.Once);
+        
+        _storageBrokerMock.VerifyNoOtherCalls();
+        _loggingBrokerMock.VerifyNoOtherCalls();
+        _dateTimeBrokerMock.VerifyNoOtherCalls();
     }
 }
