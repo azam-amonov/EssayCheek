@@ -1,4 +1,5 @@
 using EssayCheek.Api.Model.Foundation.Users;
+using EssayCheek.Api.Model.Foundation.Users.Exceptions;
 using EssayCheek.Api.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
@@ -18,35 +19,131 @@ public class UsersController : RESTFulController
     [HttpPost("create-user")]
     public async ValueTask<ActionResult<User>> PostUserAsync(User user)
     {
-        User addedUser = await _userService.AddUserAsync(user);
-        return Created(addedUser);
+        try
+        {
+            User addedUser = await _userService.AddUserAsync(user);
+            return Created(addedUser);
+        }
+        catch (UserValidationException userValidationException)
+        {
+            return BadRequest(userValidationException.InnerException);
+        }
+        catch (UserDependencyValidationException userDependencyValidationException)
+                        when (userDependencyValidationException.InnerException is AlreadyExistsUserException)
+        {
+            return Conflict(userDependencyValidationException.InnerException);
+        }
+        catch (UserDependencyException userDependencyException)
+        {
+            return InternalServerError(userDependencyException);
+        }
     }
 
-    [HttpGet("get-all-users")] 
+    [HttpGet("get-all-users")]
     public ActionResult<IQueryable<User>> GetAllUsers()
     {
-        IQueryable<User> retrievedUsers = _userService.RetrieveAllUsers();
-        return Ok(retrievedUsers);
+        try
+        {
+            IQueryable<User> retrievedUsers = _userService.RetrieveAllUsers();
+            return Ok(retrievedUsers);
+        }
+        catch (UserDependencyException userDependencyException)
+        {
+            return InternalServerError(userDependencyException);
+        }
+        catch (UserServiceException userServiceException)
+        {
+            return InternalServerError(userServiceException);
+        }
     }
 
     [HttpGet("get-user-by-id/{userId}")]
     public async ValueTask<ActionResult<User>> GetUserByIdAsync(Guid userId)
     {
-        User user = await _userService.RetrieveUserByIdAsync(userId);
-        return Ok(user);
+        try
+        {
+            User user = await _userService.RetrieveUserByIdAsync(userId);
+            return Ok(user);
+        }
+        catch (UserValidationException userValidationException)
+        {
+            return BadRequest(userValidationException.InnerException);
+        }
+        catch (UserDependencyException userDependencyException)
+        {
+            return InternalServerError(userDependencyException);
+        }
+        catch (UserServiceException userServiceException)
+        {
+            return InternalServerError(userServiceException);
+        }
     }
 
     [HttpPut("update-user")]
     public async ValueTask<ActionResult<User>> PutUserAsync(User user)
     {
-        User modifiedUser = await _userService.ModifyUserAsync(user);
-        return Ok(modifiedUser);
+        try
+        {
+            User modifiedUser = await _userService.ModifyUserAsync(user);
+            return Ok(modifiedUser);
+        }
+        catch (UserValidationException userValidationException)
+                        when (userValidationException.InnerException is NotFoundUserException)
+        {
+            return NotFound(userValidationException.InnerException);
+        }
+        catch (UserValidationException userValidationException)
+        {
+            return BadRequest(userValidationException.InnerException);
+        }
+        catch (UserDependencyValidationException userDependencyValidationException)
+                        when (userDependencyValidationException.InnerException is AlreadyExistsUserException)
+        {
+            return Conflict(userDependencyValidationException.InnerException);
+        }
+        catch (UserDependencyException userDependencyException)
+        {
+            return InternalServerError(userDependencyException);
+        }
+        catch (UserServiceException userServiceException)
+        {
+            return InternalServerError(userServiceException.InnerException);
+        }
     }
 
     [HttpDelete("delete-user-by-id/{userId}")]
     public async ValueTask<ActionResult<User>> DeleteUserAsync(Guid userId)
     {
-        User user = await _userService.RemoveUserByIdAsync(userId);
-        return Ok(user);
+        try
+        {
+            User user = await _userService.RemoveUserByIdAsync(userId);
+            return Ok(user);
+        }
+        catch (UserValidationException userValidationException)
+                        when (userValidationException.InnerException is NotFoundUserException)
+        {
+            return NotFound(userValidationException.InnerException);
+        }
+        catch (UserValidationException userValidationException)
+        {
+            return BadRequest(userValidationException.InnerException);
+        }
+        catch (UserDependencyValidationException userDependencyValidationException)
+                        when (userDependencyValidationException.InnerException is LockedUserException)
+        {
+            return Locked(userDependencyValidationException.InnerException);
+        }
+        catch (UserDependencyValidationException userDependencyValidationException)
+        {
+            return BadRequest(userDependencyValidationException.InnerException);
+        }
+        catch (UserDependencyException userDependencyException)
+        {
+            return InternalServerError(userDependencyException.InnerException);
+        }
+        catch (UserServiceException userServiceException)
+        {
+            return InternalServerError(userServiceException.InnerException);
+        }
     }
 }
