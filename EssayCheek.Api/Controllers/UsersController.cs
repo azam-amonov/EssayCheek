@@ -15,35 +15,35 @@ public class UsersController : RESTFulController
     public UsersController(IUserService userService) =>
         _userService = userService;
 
-    [HttpPost]
+    [HttpPost("create-user")]
     public async ValueTask<ActionResult<User>> PostUserAsync(User user)
     {
         User addedUser = await _userService.AddUserAsync(user);
         return Created(addedUser);
     }
 
-    [HttpGet] 
+    [HttpGet("get-all-users")] 
     public ActionResult<IQueryable<User>> GetAllUsers()
     {
         IQueryable<User> retrievedUsers = _userService.RetrieveAllUsers();
         return Ok(retrievedUsers);
     }
 
-    [HttpGet("{userId}")]
+    [HttpGet("get-user-by-id/{userId}")]
     public async ValueTask<ActionResult<User>> GetUserByIdAsync(Guid userId)
     {
         User user = await _userService.RetrieveUserByIdAsync(userId);
         return Ok(user);
     }
 
-    [HttpPut]
+    [HttpPut("update-user")]
     public async ValueTask<ActionResult<User>> PutUserAsync(User user)
     {
         User modifiedUser = await _userService.ModifyUserAsync(user);
         return Ok(modifiedUser);
     }
 
-    [HttpDelete("{userId}")]
+    [HttpDelete("delete-user-by-id/{userId}")]
     public async ValueTask<ActionResult<User>> DeleteUserAsync(Guid userId)
     {
         User user = await _userService.RemoveUserByIdAsync(userId);

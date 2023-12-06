@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 using EssayCheek.Api.Brokers.DateTimes;
 using EssayCheek.Api.Brokers.Logging;
 using EssayCheek.Api.Brokers.StorageBroker;
-using EssayCheek.Api.Model.Foundation.EssayResult;
+using EssayCheek.Api.Model.Foundation.EssayResults;
 using EssayCheek.Api.Model.Foundation.Essays;
 using EssayCheek.Api.Services.EssayResults;
 using Microsoft.Data.SqlClient;
