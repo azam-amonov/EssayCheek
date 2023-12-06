@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using EssayCheek.Api.Model.Foundation.Essays;
 
-namespace EssayCheek.Api.Model.Foundation.EssayResult;
+namespace EssayCheek.Api.Model.Foundation.EssayResults;
 
 public class EssayResult
 {
@@ -11,9 +11,8 @@ public class EssayResult
     
     public int Score { get; set; }
     
-    [JsonIgnore]
     public Guid EssayId { get; set; }
 
     [JsonIgnore] 
-    public virtual Essay Essay {get; set; }
+    public virtual Essay? Essay {get; set; }
 }

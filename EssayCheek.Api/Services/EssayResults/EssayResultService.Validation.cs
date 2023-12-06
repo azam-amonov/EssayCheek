@@ -1,5 +1,5 @@
-using EssayCheek.Api.Model.Foundation.EssayResult;
-using EssayCheek.Api.Model.Foundation.EssayResult.Exception;
+using EssayCheek.Api.Model.Foundation.EssayResults;
+using EssayCheek.Api.Model.Foundation.EssayResults.Exception;
 
 namespace EssayCheek.Api.Services.EssayResults;
 
