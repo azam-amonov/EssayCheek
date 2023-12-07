@@ -1,4 +1,5 @@
 using EssayCheek.Api.Model.Foundation.Essays;
+using EssayCheek.Api.Model.Foundation.Essays.Exceptions;
 using EssayCheek.Api.Services.Essays;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
@@ -18,8 +19,15 @@ public class EssayController : RESTFulController
     [HttpPost("create-essay")]
     public async ValueTask<ActionResult<Essay>> PostEssayAsync(Essay essay)
     {
-        Essay addedEssay = await _essayService.AddEssayAsync(essay);
-        return Created(addedEssay);
+        try
+        {
+            Essay addedEssay = await _essayService.AddEssayAsync(essay);
+            return Created(addedEssay);
+        }
+        catch (EssayValidationException essayValidationException)
+        {
+            return BadRequest(essayValidationException.InnerException);
+        }
     }
 
     [HttpGet("get/all-essays")]
