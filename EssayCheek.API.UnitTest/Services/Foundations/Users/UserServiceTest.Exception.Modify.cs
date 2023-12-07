@@ -2,14 +2,16 @@ using EssayCheek.Api.Model.Foundation.Users;
 using EssayCheek.Api.Model.Foundation.Users.Exceptions;
 using FluentAssertions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Moq;
+using Xunit.Sdk;
 
 namespace EssayCheek.API.UnitTest.Services.Foundations.Users;
 
 public partial class UserServiceTest
 {
     [Fact]
-    public async Task ShouldThrowsCriticalDependencyExceptionOnModifyIfSqlOccursAndItAsync()
+    public async Task ShouldThrowCriticalDependencyExceptionOnModifyIfSqlOccursAndItAsync()
     {
         //given
         User randomUser = CreateRandomUser();
@@ -51,5 +53,41 @@ public partial class UserServiceTest
 
         _storageBrokerMock.VerifyNoOtherCalls();
         _loggingBrokerMock.VerifyNoOtherCalls();
+    }
+
+    [Fact]
+    public async Task ShouldThrowDependencyExceptionOnModifyDatabaseUpdateExceptionOccuredAndLogItAsync()
+    {
+            //given
+            User randomUser = CreateRandomUser();
+            User someUser = randomUser;
+            var databaseUpdateException = new DbUpdateException();
+
+            var failedStorageUserException = 
+                        new FailedUserStorageException(databaseUpdateException);
+
+            var expectedUserDependencyException =
+                        new UserDependencyException(failedStorageUserException);
+            
+            _dateTimeBrokerMock.Setup(broker => 
+                broker.GetCurrentDateTimeOffset())
+                        .Throws(databaseUpdateException);
+            
+            //when
+            ValueTask<User> modifyUserTask = _userService.ModifyUserAsync(someUser);
+
+            UserDependencyException actualUserDependencyException =
+                await Assert.ThrowsAsync<UserDependencyException>(
+                        modifyUserTask.AsTask);
+            
+            //then
+            actualUserDependencyException.Should().BeEquivalentTo(expectedUserDependencyException);
+            
+            _loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                        expectedUserDependencyException))),Times.Once);
+            
+            _dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTimeOffset(),Times.Once);
     }
 }
