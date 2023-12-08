@@ -37,14 +37,15 @@ public partial class EssayServiceTest
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    [InlineData("  ")]
+    [InlineData("   ")]
     public async Task ShouldThrowValidationExceptionOnAddIfEssayIsInvalidAndLogItAsync(string invalidText)
     {
        //given
        var invalidEssay = new Essay()
        {
                        Title = invalidText,
-                       Content = invalidText
+                       Content = invalidText,
+                       SubmittedDate = default(DateTimeOffset)
        };
     
        var expectedInvalidEssayException = new InvalidEssayException();
@@ -78,15 +79,14 @@ public partial class EssayServiceTest
        actualEssayValidationException.Should().BeEquivalentTo(expectedEssayValidationException);
        
        _loggingBrokerMock.Verify(broker => 
-                       broker.LogError(It.Is(SameExceptionAs(
-                                       expectedEssayValidationException))),Times.Once);
+                broker.LogError(It.Is(SameExceptionAs(
+                        expectedEssayValidationException))),Times.Once);
        
        _storageBrokerMock.Verify(broker =>
-                       broker.InsertEssayAsync(invalidEssay), Times.Never);
+                       broker.InsertEssayAsync(invalidEssay),Times.Never);
        
        _loggingBrokerMock.VerifyNoOtherCalls();
        _storageBrokerMock.VerifyNoOtherCalls();
        _dateTimeBrokerMock.VerifyNoOtherCalls();
     }
-    
 }

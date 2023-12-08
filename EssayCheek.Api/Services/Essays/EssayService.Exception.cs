@@ -23,6 +23,23 @@ public partial class EssayService
         {
             throw CreateAndLogValidationException(invalidEssayException);
         }
+        catch (NotFoundEssayException notFoundEssayException)
+        {
+            throw CreateAndLogValidationException(notFoundEssayException);
+        }
+        catch (Exception exception)
+        {
+            var failedEssayEssayException = new FailedEssayServiceException(exception);
+            throw CreateAndLogServiceException(failedEssayEssayException);
+        }
+    }
+
+    private Exception CreateAndLogServiceException(Xeption exception)
+    {
+        var essayServiceException = new EssayServiceException(exception);
+        _loggingBroker.LogError(essayServiceException);
+
+        return essayServiceException;
     }
 
     private EssayValidationException CreateAndLogValidationException(Xeption exception)

@@ -1,5 +1,4 @@
 using EssayCheek.Api.Model.Foundation.Essays;
-using EssayCheek.Api.Model.Foundation.Essays.Exceptions;
 using FluentAssertions;
 using Force.DeepCloner;
 using Moq;
@@ -32,21 +31,4 @@ public partial class EssayServiceTest
         _storageBrokerMock.VerifyNoOtherCalls();
         _loggingBrokerMock.VerifyNoOtherCalls();
     }
-
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
