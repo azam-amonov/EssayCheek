@@ -19,6 +19,10 @@ public partial class EssayService
         {
             throw CreateAndLogValidationException(essayNullException);
         }
+        catch (InvalidEssayException invalidEssayException)
+        {
+            throw CreateAndLogValidationException(invalidEssayException);
+        }
     }
 
     private EssayValidationException CreateAndLogValidationException(Xeption exception)
