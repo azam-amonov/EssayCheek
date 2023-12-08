@@ -10,7 +10,7 @@ namespace EssayCheek.API.UnitTest.Services.Foundations.Users;
 public partial class UserServiceTest
 {
     [Fact]
-    public async ValueTask ShouldTheCriticalDependencyExceptionOnAddIfSqlErrorOccursLogItAsync()
+    public async ValueTask ShouldThrowCriticalDependencyExceptionOnAddIfSqlErrorOccursLogItAsync()
     {
         // Given
         User randomUser = CreateRandomUser();
