@@ -45,11 +45,24 @@ public partial class UserService
             var lockedUserException = new LockedUserException(dbUpdateConcurrencyException);
             throw CreateAndLogDependencyValidationException(lockedUserException);
         }
+        catch (DbUpdateException databaseUpdateException)
+        {
+            var failedUserStorageException = new FailedUserStorageException(databaseUpdateException);
+            throw CreateAndLogDependencyException(failedUserStorageException);
+        }
         catch (Exception exception)
         {
             var failedUserException = new FailedUserServiceException(exception); 
             throw CreateAndLogServiceException(failedUserException);
         }
+    }
+
+    private UserDependencyException CreateAndLogDependencyException(Xeption exception)
+    {
+        var userDependencyException = new UserDependencyException(exception);
+        _loggingBroker.LogError(userDependencyException);
+        
+        return userDependencyException;
     }
 
     private IQueryable<User> TryCatch(ReturningUsersFunction returningUsersFunction)
