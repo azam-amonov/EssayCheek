@@ -1,7 +1,6 @@
 using System.Data;
 using EssayCheek.Api.Model.Foundation.Essays;
 using EssayCheek.Api.Model.Foundation.Essays.Exceptions;
-using Microsoft.Extensions.Options;
 
 namespace EssayCheek.Api.Services.Essays;
 
@@ -13,7 +12,8 @@ public partial class EssayService
         ValidateEssayIsNotNull(essay);
         Validate((Rule: IsInvalid(essay.Id), Parameter: nameof(essay.Id)),
                         (Ruel: IsInvalid(essay.Title), Parameter: nameof(essay.Title)),
-                        (Ruel: IsInvalid(essay.Content), Parameter: nameof(essay.Content)));
+                        (Ruel: IsInvalid(essay.Content), Parameter: nameof(essay.Content)),
+                        (Ruel: IsInvalid(essay.SubmittedDate), Parameter: nameof(essay.SubmittedDate)));
     }
 
     private static dynamic IsInvalid(Guid id) => new
@@ -26,12 +26,31 @@ public partial class EssayService
             Condition = string.IsNullOrWhiteSpace(text),
             Message = "Text is required"
     };
+    
+    private static dynamic IsInvalid(DateTimeOffset date) => new
+    {
+                    Condition = date == default,
+                    Message = "Text is required"
+    };
 
     private static void ValidateEssayIsNotNull(Essay essay)
     {
         if (essay is null)
         {
             throw new EssayNullException();
+        }
+    }
+
+    private void ValidateEssayId(Guid id)
+    {
+        Validate((Rule: IsInvalid(id), Parameter: nameof(Essay.Id)));
+    }
+
+    private static void ValidateStorageEssay(Essay essay, Guid essayId)
+    {
+        if (essay is null)
+        {
+            throw new NotFoundEssayException(essayId);
         }
     }
     
