@@ -95,4 +95,53 @@ public partial class UserServiceTest
             _storageBrokerMock.VerifyNoOtherCalls();
             _loggingBrokerMock.VerifyNoOtherCalls();
     }
+
+    #region Not Finished Dependency Test
+
+    
+
+    // to pass this test should create a validation as "ValidateAgainstStorageJobOnModify" on service validation class
+    // and should ass properties as CreatedDate and UpdatedDate on model 
+    // [Fact]
+    // public async Task ShouldThrowDependencyExceptionOnModifyDatabaseUpdateExceptionOccuredAndLogItAsync()
+    // {
+    //         //given
+    //         User randomUser = CreateRandomUser();
+    //         User someUser = randomUser;
+    //         var databaseUpdateException = new DbUpdateException();
+    //
+    //         var failedStorageUserException = 
+    //                     new FailedUserStorageException(databaseUpdateException);
+    //         
+    //         var expectedUserDependencyException =
+    //                     new UserDependencyException(failedStorageUserException);
+    //         
+    //         _dateTimeBrokerMock.Setup(broker => 
+    //             broker.GetCurrentDateTimeOffset())
+    //                     .Throws(databaseUpdateException);
+    //         
+    //         //when
+    //         ValueTask<User> modifyUserTask = _userService.ModifyUserAsync(someUser);
+    //
+    //         UserDependencyException actualUserDependencyException =
+    //             await Assert.ThrowsAsync<UserDependencyException>(
+    //                     modifyUserTask.AsTask);
+    //         
+    //         //then
+    //         actualUserDependencyException.Should().BeEquivalentTo(expectedUserDependencyException);
+    //         
+    //         _loggingBrokerMock.Verify(broker =>
+    //             broker.LogError(It.Is(SameExceptionAs(
+    //                     expectedUserDependencyException))),Times.Once);
+    //         
+    //         _dateTimeBrokerMock.Verify(broker =>
+    //             broker.GetCurrentDateTimeOffset(),Times.Once);
+    //         
+    //         _storageBrokerMock.VerifyNoOtherCalls();
+    //         _loggingBrokerMock.VerifyNoOtherCalls();
+    //         _dateTimeBrokerMock.VerifyNoOtherCalls();
+    // }
+    //
+    #endregion
+
 }
