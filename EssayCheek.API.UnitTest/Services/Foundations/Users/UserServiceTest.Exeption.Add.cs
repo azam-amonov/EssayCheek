@@ -121,4 +121,13 @@ public partial class UserServiceTest
             _loggingBrokerMock.VerifyNoOtherCalls();
             _storageBrokerMock.VerifyNoOtherCalls();
     }
+    
+    // there should add test as 
+    
+    // [Fact]
+    // public async Task ShouldThrowServiceExceptionOnAddIfDatabaseUpdateOccuredAndLogAsync
+    
+    // [Fact]
+    // public async Task ShouldThrowDependencyExceptionOnAddIfDatabaseUpdateOccuredAndLogAsync
+
 }
