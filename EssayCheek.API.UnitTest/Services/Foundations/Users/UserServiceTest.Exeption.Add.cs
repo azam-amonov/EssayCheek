@@ -53,7 +53,8 @@ public partial class UserServiceTest
         User randomUser = CreateRandomUser();
         string randomMessage = GteRandomString();
         
-        var duplicateKeyException = new DuplicateKeyException(randomMessage);
+        var duplicateKeyException = 
+                new DuplicateKeyException(randomMessage);
 
         var alreadyExistsUserException = 
                 new AlreadyExistsUserException(duplicateKeyException);
