@@ -10,7 +10,7 @@ namespace EssayCheek.API.UnitTest.Services.Foundations.Users;
 public partial class UserServiceTest
 {
     [Fact]
-    public async ValueTask ShouldTheCriticalDependencyExceptionOnAddIfSqlErrorOccursLogItAsync()
+    public async ValueTask ShouldThrowCriticalDependencyExceptionOnAddIfSqlErrorOccursLogItAsync()
     {
         // Given
         User randomUser = CreateRandomUser();
@@ -53,7 +53,8 @@ public partial class UserServiceTest
         User randomUser = CreateRandomUser();
         string randomMessage = GteRandomString();
         
-        var duplicateKeyException = new DuplicateKeyException(randomMessage);
+        var duplicateKeyException = 
+                new DuplicateKeyException(randomMessage);
 
         var alreadyExistsUserException = 
                 new AlreadyExistsUserException(duplicateKeyException);
@@ -91,9 +92,12 @@ public partial class UserServiceTest
             // Given
             User randomUser = CreateRandomUser();
             var serviceException = new Exception();
-            var failedUserServiceException = new FailedUserServiceException(serviceException);
+            
+            var failedUserServiceException = 
+                        new FailedUserServiceException(serviceException);
 
-            var expectedUserServiceException = new UserServiceException(failedUserServiceException);
+            var expectedUserServiceException = 
+                        new UserServiceException(failedUserServiceException);
 
             _storageBrokerMock.Setup(broker =>
                         broker.InsertUserAsync(randomUser)).ThrowsAsync(serviceException);
@@ -117,4 +121,13 @@ public partial class UserServiceTest
             _loggingBrokerMock.VerifyNoOtherCalls();
             _storageBrokerMock.VerifyNoOtherCalls();
     }
+    
+    // there should add test as 
+    
+    // [Fact]
+    // public async Task ShouldThrowServiceExceptionOnAddIfDatabaseUpdateOccuredAndLogAsync
+    
+    // [Fact]
+    // public async Task ShouldThrowDependencyExceptionOnAddIfDatabaseUpdateOccuredAndLogAsync
+
 }
