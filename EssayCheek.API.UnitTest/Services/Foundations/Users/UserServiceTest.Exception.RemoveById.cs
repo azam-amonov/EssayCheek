@@ -14,11 +14,14 @@ public partial class UserServiceTest
         // given
         Guid someUserId = Guid.NewGuid();
 
-        var databaseUpdateConcurrencyException = new DbUpdateConcurrencyException();
+        var databaseUpdateConcurrencyException = 
+                new DbUpdateConcurrencyException();
         
-        var lockedUserException = new LockedUserException(databaseUpdateConcurrencyException);
+        var lockedUserException = 
+                new LockedUserException(databaseUpdateConcurrencyException);
 
-        var expectedUserDependencyValidationException = new UserDependencyValidationException(lockedUserException);
+        var expectedUserDependencyValidationException = 
+                new UserDependencyValidationException(lockedUserException);
 
         _storageBrokerMock.Setup(broker => 
                 broker.SelectUserByIdAsync(It.IsAny<Guid>()))
