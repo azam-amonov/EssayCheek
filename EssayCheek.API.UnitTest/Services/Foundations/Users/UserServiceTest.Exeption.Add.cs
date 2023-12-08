@@ -92,9 +92,12 @@ public partial class UserServiceTest
             // Given
             User randomUser = CreateRandomUser();
             var serviceException = new Exception();
-            var failedUserServiceException = new FailedUserServiceException(serviceException);
+            
+            var failedUserServiceException = 
+                        new FailedUserServiceException(serviceException);
 
-            var expectedUserServiceException = new UserServiceException(failedUserServiceException);
+            var expectedUserServiceException = 
+                        new UserServiceException(failedUserServiceException);
 
             _storageBrokerMock.Setup(broker =>
                         broker.InsertUserAsync(randomUser)).ThrowsAsync(serviceException);
