@@ -90,4 +90,15 @@ public partial class UserServiceTest
         _storageBrokerMock.VerifyNoOtherCalls();
         _loggingBrokerMock.VerifyNoOtherCalls();
     }
+    
+    // then here should be some unit tests for date types as
+    // 
+    //  [Fact]
+    //  public async Task ShouldThrowValidationExceptionOnAddIfCreateAndUpdateDateIsNotSameAndAndLogItAsync()
+    // 
+    //
+    //  [Theory]
+    //  [MemberData(nameof(MinutesBeforeOrAfter)]
+    //  public async Task ShouldThrowValidationExceptionOnAddIfCreatedDateIsNotRecentAndLogItAsync(int minutesBeforeOrAfter);
+    // 
 }
