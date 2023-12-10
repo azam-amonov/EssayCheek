@@ -47,4 +47,43 @@ public partial class EssayServiceTest
         _loggingBrokerMock.VerifyNoOtherCalls();
         _dateTimeBrokerMock.VerifyNoOtherCalls();
     }
+
+    [Fact]
+    public async Task ShouldThrowServiceExceptionOnRetrieveEssayByIdIfDatabaseUpdateErrorOccursAndLogItAsync()
+    {
+        //given
+        Guid someId = Guid.NewGuid();
+        var serviceException = new Exception();
+
+        var failedEssayServiceException =
+                        new FailedEssayServiceException(serviceException);
+
+        var expectedEssayServiceException = 
+                        new EssayServiceException(failedEssayServiceException);
+
+        _storageBrokerMock.Setup(broker =>
+                    broker.SelectEssayByIdAsync(It.IsAny<Guid>()))
+                        .ThrowsAsync(serviceException);
+
+        //when
+        ValueTask<Essay?> retrievedEssayByIdTask = _essayService.RetrieveEssayByIdAsync(someId);
+
+        EssayServiceException actualEssayServiceException =
+                        await Assert.ThrowsAsync<EssayServiceException>(retrievedEssayByIdTask.AsTask);
+        
+        //then
+        actualEssayServiceException.Should().BeEquivalentTo(expectedEssayServiceException);
+        
+        _storageBrokerMock.Verify(broker =>
+                        broker.SelectEssayByIdAsync(It.IsAny<Guid>()),Times.Once);
+        
+        _loggingBrokerMock.Verify(broker =>
+                        broker.LogError(It.Is(SameExceptionAs(
+                                        expectedEssayServiceException))),
+                        Times.Once);
+        
+        _storageBrokerMock.VerifyNoOtherCalls();
+        _loggingBrokerMock.VerifyNoOtherCalls();
+        _dateTimeBrokerMock.VerifyNoOtherCalls();
+    }
 }
