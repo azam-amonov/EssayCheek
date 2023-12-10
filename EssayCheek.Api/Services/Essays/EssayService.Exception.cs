@@ -47,6 +47,24 @@ public partial class EssayService
         }
     }
 
+    private IQueryable<Essay> TryCatch(ReturningEssaysFunctions returningEssaysFunctions)
+    {
+        try
+        {
+            return returningEssaysFunctions();
+        }
+        catch (SqlException sqlException)
+        {
+            var failedEssayStorageException = new FailedEssayStorageException(sqlException);
+            throw CreateAndLogCriticalDependencyException(failedEssayStorageException);
+        }
+        catch (Exception exception)
+        {
+            var failedEssayServiceException = new FailedEssayServiceException(exception);
+            throw CreateAndLogServiceException(failedEssayServiceException);
+        }
+    }
+
     private Exception CreateAndLogDependencyValidationException(Xeption exception)
     {
         var essayDependencyValidationException = new EssayDependencyValidationException(exception);
