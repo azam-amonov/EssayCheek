@@ -42,7 +42,7 @@ public partial class UserServiceTest
     }
     
     [Fact]
-    public void ShouldThrowServiceExceptionOnRetrieveAllIfServiceErrorOccursAndLogItAsync()
+    public void ShouldThrowServiceExceptionOnRetrieveAllIfServiceErrorOccursAndLogIt()
     {
         //given
         string exceptionsMessage = GteRandomString();
