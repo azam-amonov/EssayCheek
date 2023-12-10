@@ -8,7 +8,7 @@ namespace EssayCheek.API.UnitTest.Services.Foundations.Users;
 public partial class UserServiceTest
 {
     [Fact]
-    public async Task ShouldThrowValidationExceptionOnByIdIsInvalidAndLogItAsync()
+    public async Task ShouldThrowValidationExceptionOnRetrieveByIdIsInvalidAndLogItAsync()
     {
         // given
         var invalidUserId = Guid.Empty;
