@@ -29,8 +29,8 @@ public partial class EssayService
     
     private static dynamic IsInvalid(DateTimeOffset date) => new
     {
-                    Condition = date == default,
-                    Message = "Date is required"
+            Condition = date == default,
+            Message = "Date is required"
     };
 
     private static void ValidateEssayIsNotNull(Essay essay)
@@ -46,9 +46,9 @@ public partial class EssayService
         Validate((Rule: IsInvalid(id), Parameter: nameof(Essay.Id)));
     }
 
-    private static void ValidateStorageEssay(Essay essay, Guid essayId)
+    private static void ValidateStorageEssay(Essay maybeEssay, Guid essayId)
     {
-        if (essay is null)
+        if (maybeEssay is null)
         {
             throw new NotFoundEssayException(essayId);
         }
@@ -67,6 +67,7 @@ public partial class EssayService
                         value: rule.Message);
             }
         }
+        
         invalidEssayException.ThrowIfContainsErrors();
     }
 }
