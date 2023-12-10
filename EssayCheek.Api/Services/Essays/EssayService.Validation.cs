@@ -11,9 +11,9 @@ public partial class EssayService
     {
         ValidateEssayIsNotNull(essay);
         Validate((Rule: IsInvalid(essay.Id), Parameter: nameof(essay.Id)),
-                        (Ruel: IsInvalid(essay.Title), Parameter: nameof(essay.Title)),
-                        (Ruel: IsInvalid(essay.Content), Parameter: nameof(essay.Content)),
-                        (Ruel: IsInvalid(essay.SubmittedDate), Parameter: nameof(essay.SubmittedDate)));
+                        (Rule: IsInvalid(essay.Title), Parameter: nameof(essay.Title)),
+                        (Rule: IsInvalid(essay.Content), Parameter: nameof(essay.Content)),
+                        (Rule: IsInvalid(essay.SubmittedDate), Parameter: nameof(essay.SubmittedDate)));
     }
 
     private static dynamic IsInvalid(Guid id) => new
@@ -30,7 +30,7 @@ public partial class EssayService
     private static dynamic IsInvalid(DateTimeOffset date) => new
     {
                     Condition = date == default,
-                    Message = "Text is required"
+                    Message = "Date is required"
     };
 
     private static void ValidateEssayIsNotNull(Essay essay)
@@ -41,7 +41,7 @@ public partial class EssayService
         }
     }
 
-    private void ValidateEssayId(Guid id)
+    private static void ValidateEssayId(Guid id)
     {
         Validate((Rule: IsInvalid(id), Parameter: nameof(Essay.Id)));
     }
@@ -54,7 +54,7 @@ public partial class EssayService
         }
     }
     
-    private static void Validate(params (dynamic Ruel, string Parameter)[] validations)
+    private static void Validate(params (dynamic Rule, string Parameter)[] validations)
     {
         var invalidEssayException = new InvalidEssayException();
 
@@ -64,8 +64,9 @@ public partial class EssayService
             {
                 invalidEssayException.UpsertDataList(
                         key: parameter,
-                        value: rule.Condition);
+                        value: rule.Message);
             }
         }
+        invalidEssayException.ThrowIfContainsErrors();
     }
 }
