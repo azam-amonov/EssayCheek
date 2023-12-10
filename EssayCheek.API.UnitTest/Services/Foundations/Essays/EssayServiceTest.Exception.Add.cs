@@ -1,3 +1,4 @@
+using EFxceptions.Models.Exceptions;
 using EssayCheek.Api.Model.Foundation.Essays;
 using EssayCheek.Api.Model.Foundation.Essays.Exceptions;
 using FluentAssertions;
@@ -44,7 +45,84 @@ public partial class EssayServiceTest
         _loggingBrokerMock.VerifyNoOtherCalls();
         _storageBrokerMock.VerifyNoOtherCalls();
     }
-    
+
+    [Fact]
+    public async Task ShouldThrowDependencyValidationExceptionOnAddIfDuplicateKeyErrorOccurredAndLogItAsync()
+    {
+        //given
+        Essay randomEssay = CreateRandomEssay();
+        string randomMessage = GetRandomString();
+
+        var duplicateKeyException = new 
+                        DuplicateKeyException(randomMessage);
+        
+        var alreadyExitsEssayException = new 
+                        AlreadyExistsEssayException(duplicateKeyException);
+
+        var expectedEssayDependencyValidationException =
+                        new EssayDependencyValidationException(alreadyExitsEssayException);
+        
+        _storageBrokerMock.Setup(broker => 
+                        broker.InsertEssayAsync(randomEssay)).ThrowsAsync(duplicateKeyException);
+
+        //when
+        ValueTask<Essay> addEssayTask = _essayService.AddEssayAsync(randomEssay);
+
+        EssayDependencyValidationException actualEssayDependencyValidationException =
+                        await Assert.ThrowsAsync<EssayDependencyValidationException>(addEssayTask.AsTask);
+        
+        //then
+        actualEssayDependencyValidationException.Should()
+                        .BeEquivalentTo(expectedEssayDependencyValidationException);
+        
+        _loggingBrokerMock.Verify(broker => 
+                        broker.LogError(It.Is(SameExceptionAs(
+                                        expectedEssayDependencyValidationException))), Times.Once);
+        
+        _storageBrokerMock.Verify(broker => 
+                        broker.InsertEssayAsync(It.IsAny<Essay>()), Times.Once);
+        
+        _dateTimeBrokerMock.VerifyNoOtherCalls();
+        _storageBrokerMock.VerifyNoOtherCalls();
+        _loggingBrokerMock.VerifyNoOtherCalls();
+    }
+
+    [Fact]
+    public async Task ShouldThrowServiceExceptionOnAddIfServiceErrorOccurredAndLogItAsync()
+    {
+        //given
+        Essay randomEssay = CreateRandomEssay();
+        var serviceException = new Exception();
+
+        var failedEssayServiceException =
+                        new FailedEssayServiceException(serviceException);
+
+        var expectedEssayServiceException =
+                        new EssayServiceException(failedEssayServiceException);
+
+        _storageBrokerMock.Setup(broker =>
+                        broker.InsertEssayAsync(randomEssay)).ThrowsAsync(serviceException);
+        
+        //when
+        ValueTask<Essay> addEssayTask = _essayService.AddEssayAsync(randomEssay);
+
+        EssayServiceException actualEssayServiceException =
+                        await Assert.ThrowsAsync<EssayServiceException>(addEssayTask.AsTask);
+        
+        //then
+
+        actualEssayServiceException.Should().BeEquivalentTo(expectedEssayServiceException);
+        
+        _loggingBrokerMock.Verify(broker =>
+                        broker.LogError(It.Is(SameExceptionAs(expectedEssayServiceException
+                        ))),Times.Once);
+        
+        _storageBrokerMock.Verify(broker =>
+                        broker.InsertEssayAsync(randomEssay), Times.Once);
+        
+        _loggingBrokerMock.VerifyNoOtherCalls();
+        _storageBrokerMock.VerifyNoOtherCalls();
+    }
 }
 
 
