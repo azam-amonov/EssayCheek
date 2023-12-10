@@ -23,11 +23,11 @@ public partial class UserServiceTest
                 new UserValidationException(invalidUserException);
 
         //when
-        ValueTask<User> removedUserByIdTask =
-                _userService.RetrieveUserByIdAsync(invalidUserId);
+        ValueTask<User> removeUserByIdTask =
+                _userService.RemoveUserByIdAsync(invalidUserId);
 
         UserValidationException actualUserValidationException =
-                await Assert.ThrowsAsync<UserValidationException>(removedUserByIdTask.AsTask);
+                await Assert.ThrowsAsync<UserValidationException>(removeUserByIdTask.AsTask);
 
         //then
         actualUserValidationException.Should().BeEquivalentTo(expectedUserValidationException);
