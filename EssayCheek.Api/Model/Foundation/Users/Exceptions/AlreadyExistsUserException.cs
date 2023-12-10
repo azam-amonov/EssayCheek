@@ -2,8 +2,8 @@ using Xeptions;
 
 namespace EssayCheek.Api.Model.Foundation.Users.Exceptions;
 
-public class AlreadyExistsEssayException : Xeption
+public class AlreadyExistsUserException : Xeption
 {
-    public AlreadyExistsEssayException(Exception innerException)
+    public AlreadyExistsUserException(Exception innerException)
                  :base("User already exits.", innerException) { }
 }
