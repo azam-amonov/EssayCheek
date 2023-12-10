@@ -78,5 +78,4 @@ public partial class EssayServiceTest
         _storageBrokerMock.VerifyNoOtherCalls();
         _loggingBrokerMock.VerifyNoOtherCalls();
     }
-    
 }
