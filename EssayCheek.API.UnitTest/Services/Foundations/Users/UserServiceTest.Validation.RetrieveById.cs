@@ -45,17 +45,17 @@ public partial class UserServiceTest
     }
     
     [Fact]
-    public async Task ShouldThrowFoundExceptionOnRetrieveByIdUserIsNotFoundAndLogItAsync()
+    public async Task ShouldThrowNotFoundExceptionOnRetrieveByIdUserIsNotFoundAndLogItAsync()
     {
         // given
         Guid someUserId = Guid.NewGuid();
         User? noUser = null;
     
-        var notFountUserException = 
+        var notFoundUserException = 
                 new NotFoundUserException(someUserId);
     
         var expectedUserValidationException = 
-                new UserValidationException(notFountUserException);
+                new UserValidationException(notFoundUserException);
     
         _storageBrokerMock.Setup(broker => 
                 broker.SelectUserByIdAsync(It.IsAny<Guid>()))

@@ -56,15 +56,7 @@ public partial class UserService
             throw CreateAndLogServiceException(failedUserException);
         }
     }
-
-    private UserDependencyException CreateAndLogDependencyException(Xeption exception)
-    {
-        var userDependencyException = new UserDependencyException(exception);
-        _loggingBroker.LogError(userDependencyException);
-        
-        return userDependencyException;
-    }
-
+    
     private IQueryable<User> TryCatch(ReturningUsersFunction returningUsersFunction)
     {
         try
@@ -82,7 +74,15 @@ public partial class UserService
             throw CreateAndLogServiceException(failedUserServiceException);
         }
     }
-
+    
+    private UserDependencyException CreateAndLogDependencyException(Xeption exception)
+    {
+        var userDependencyException = new UserDependencyException(exception);
+        _loggingBroker.LogError(userDependencyException);
+        
+        return userDependencyException;
+    }
+    
     private Exception CreateAndLogServiceException(Xeption exception)
     {
         var userServiceException = new UserServiceException(exception);
