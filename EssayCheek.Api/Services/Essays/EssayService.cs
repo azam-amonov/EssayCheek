@@ -43,9 +43,10 @@ public partial class EssayService : IEssayService
     TryCatch(async () =>
     {
         ValidateEssayId(essayId);
-        Essay? retrievedEssay = await _storageBroker.SelectEssayByIdAsync(essayId);
-        await _storageBroker.DeleteEssayAsync(retrievedEssay!);
+        Essay? maybeEssay = await _storageBroker.SelectEssayByIdAsync(essayId);
+        
+        ValidateStorageEssay(maybeEssay!, essayId);
 
-        return retrievedEssay;
+        return await _storageBroker.DeleteEssayAsync(maybeEssay!);
     });
 }

@@ -2,6 +2,7 @@ using EFxceptions.Models.Exceptions;
 using EssayCheek.Api.Model.Foundation.Essays;
 using EssayCheek.Api.Model.Foundation.Essays.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Xeptions;
 
 namespace EssayCheek.Api.Services.Essays;
@@ -39,6 +40,11 @@ public partial class EssayService
         {
             var alreadyExistsEssayException = new AlreadyExistsEssayException(duplicateKeyException);
             throw CreateAndLogDependencyValidationException(alreadyExistsEssayException);
+        }
+        catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+        {
+            var lockedEssayException = new LockedEssayException(dbUpdateConcurrencyException);
+            throw CreateAndLogDependencyValidationException(lockedEssayException);
         }
         catch (Exception exception)
         {
