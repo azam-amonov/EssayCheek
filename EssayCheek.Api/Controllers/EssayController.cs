@@ -39,7 +39,7 @@ public class EssayController : RESTFulController
     [HttpDelete("delete/essay-by-id/{guid}")]
     public async ValueTask<ActionResult<Essay>> DeleteEssayById(Guid essayId)
     {
-        Essay retrievedEssay = await _essayService.RemoveEssayAsync(essayId);
+        Essay retrievedEssay = await _essayService.RemoveEssayByIdAsync(essayId);
         
         return Ok(retrievedEssay);
     }

@@ -40,7 +40,7 @@ public partial class EssayService : IEssayService
 
     });
 
-    public async ValueTask<Essay> RemoveEssayAsync(Guid id)
+    public async ValueTask<Essay> RemoveEssayByIdAsync(Guid id)
     {
         Essay? retrievedEssay = await _storageBroker.SelectEssayByIdAsync(id);
         await _storageBroker.DeleteEssayAsync(retrievedEssay!);

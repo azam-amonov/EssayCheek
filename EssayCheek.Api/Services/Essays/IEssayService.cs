@@ -7,5 +7,5 @@ public interface IEssayService
     IQueryable<Essay> RetrieveAllEssays();
     ValueTask<Essay?> RetrieveEssayByIdAsync(Guid id);
     ValueTask<Essay> AddEssayAsync(Essay essay);
-    ValueTask<Essay> RemoveEssayAsync(Guid id);
+    ValueTask<Essay> RemoveEssayByIdAsync(Guid id);
 }
