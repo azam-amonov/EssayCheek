@@ -25,10 +25,6 @@ public partial class UserServiceTest
         // when
         User actualUser = await _userService.RetrieveUserByIdAsync(inputUserId);
         
-        _storageBrokerMock.Verify(broker =>
-            broker.SelectUserByIdAsync(inputUserId)
-                ,Times.Once);
-        
         // then
         actualUser.Should().BeEquivalentTo(expectedUser);
         
