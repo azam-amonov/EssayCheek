@@ -1,3 +1,4 @@
+using EFxceptions.Models.Exceptions;
 using EssayCheek.Api.Model.Foundation.Essays;
 using EssayCheek.Api.Model.Foundation.Essays.Exceptions;
 using Microsoft.Data.SqlClient;
@@ -34,11 +35,24 @@ public partial class EssayService
         {
             throw CreateAndLogValidationException(notFoundEssayException);
         }
+        catch (DuplicateKeyException duplicateKeyException)
+        {
+            var alreadyExistsEssayException = new AlreadyExistsEssayException(duplicateKeyException);
+            throw CreateAndLogDependencyValidationException(alreadyExistsEssayException);
+        }
         catch (Exception exception)
         {
             var failedEssayEssayException = new FailedEssayServiceException(exception);
             throw CreateAndLogServiceException(failedEssayEssayException);
         }
+    }
+
+    private Exception CreateAndLogDependencyValidationException(Xeption exception)
+    {
+        var essayDependencyValidationException = new EssayDependencyValidationException(exception);
+        _loggingBroker.LogError(essayDependencyValidationException);
+
+        return essayDependencyValidationException;
     }
 
     private EssayDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
