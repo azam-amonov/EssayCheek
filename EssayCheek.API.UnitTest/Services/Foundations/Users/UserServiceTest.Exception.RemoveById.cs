@@ -29,7 +29,7 @@ public partial class UserServiceTest
         
         // when
         ValueTask<User> removedUserByIdTask =
-                _userService.RetrieveUserByIdAsync(someUserId);
+                _userService.RemoveUserByIdAsync(someUserId);
 
         UserDependencyValidationException actualUserDependencyValidationException =
                 await Assert.ThrowsAsync<UserDependencyValidationException>(
