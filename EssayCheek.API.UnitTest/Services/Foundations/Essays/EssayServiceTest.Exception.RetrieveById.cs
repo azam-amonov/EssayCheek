@@ -39,7 +39,7 @@ public partial class EssayServiceTest
                         broker.SelectEssayByIdAsync(It.IsAny<Guid>()), Times.Once);
 
         _loggingBrokerMock.Verify(broker =>
-                        broker.LogError(It.Is(SameExceptionAs(
+                        broker.LogCritical(It.Is(SameExceptionAs(
                             expectedEssayDependencyException))),
                         Times.Once);
         
