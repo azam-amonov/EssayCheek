@@ -11,7 +11,7 @@ public partial class EssayService
     private delegate IQueryable<Essay> ReturningEssaysFunctions();
     private delegate ValueTask<Essay> ReturningEssayFunctions();
 
-    private async ValueTask<Essay> TryCatch(ReturningEssayFunctions returningEssayFunction)
+    private async ValueTask<Essay?> TryCatch(ReturningEssayFunctions returningEssayFunction)
     {
         try
         {

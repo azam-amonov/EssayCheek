@@ -32,7 +32,7 @@ public class EssayController : RESTFulController
     [HttpGet("get/essay-by-id/{guid}")]
     public async ValueTask<ActionResult<Essay>> GetEssayById(Guid essayId)
     {
-        Essay? retrievedEssay = await _essayService.RetrieveGetByIdAsync(essayId);
+        Essay? retrievedEssay = await _essayService.RetrieveEssayByIdAsync(essayId);
         return Ok(retrievedEssay);
     }
 

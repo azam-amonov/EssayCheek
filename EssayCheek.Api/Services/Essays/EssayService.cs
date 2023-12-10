@@ -28,7 +28,17 @@ public partial class EssayService : IEssayService
     public IQueryable<Essay> RetrieveAllEssays() => 
                     TryCatch( () => _storageBroker.SelectAllEssays());
 
-    public async ValueTask<Essay?> RetrieveGetByIdAsync(Guid id) =>  await _storageBroker.SelectEssayByIdAsync(id);
+    public ValueTask<Essay?> RetrieveEssayByIdAsync(Guid essayId) =>
+    TryCatch(async () =>
+    {
+        ValidateEssayId(essayId);
+        Essay? maybeEssay = await _storageBroker.SelectEssayByIdAsync(essayId);
+        
+        ValidateStorageEssay(maybeEssay, maybeEssay.Id);
+
+        return maybeEssay;
+
+    });
 
     public async ValueTask<Essay?> RemoveEssayAsync(Guid id)
     {
