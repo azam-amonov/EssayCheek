@@ -1,5 +1,6 @@
 using EssayCheek.Api.Model.Foundation.Essays;
 using EssayCheek.Api.Model.Foundation.Essays.Exceptions;
+using Microsoft.Data.SqlClient;
 using Xeptions;
 
 namespace EssayCheek.Api.Services.Essays;
@@ -23,6 +24,12 @@ public partial class EssayService
         {
             throw CreateAndLogValidationException(invalidEssayException);
         }
+        catch (SqlException sqlException)
+        {
+            var essayStorageException = new FailedEssayStorageException(sqlException);
+
+            throw CreateAndLogCriticalDependencyException(essayStorageException);
+        }
         catch (NotFoundEssayException notFoundEssayException)
         {
             throw CreateAndLogValidationException(notFoundEssayException);
@@ -32,6 +39,14 @@ public partial class EssayService
             var failedEssayEssayException = new FailedEssayServiceException(exception);
             throw CreateAndLogServiceException(failedEssayEssayException);
         }
+    }
+
+    private EssayDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
+    {
+        var essayDependencyException = new EssayDependencyException(exception);
+        _loggingBroker.LogCritical(essayDependencyException);
+        
+        return essayDependencyException;
     }
 
     private Exception CreateAndLogServiceException(Xeption exception)
