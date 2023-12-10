@@ -39,10 +39,11 @@ public partial class EssayService : IEssayService
 
     });
 
-    public ValueTask<Essay> RemoveEssayByIdAsync(Guid id) =>
+    public ValueTask<Essay> RemoveEssayByIdAsync(Guid essayId) =>
     TryCatch(async () =>
     {
-        Essay? retrievedEssay = await _storageBroker.SelectEssayByIdAsync(id);
+        ValidateEssayId(essayId);
+        Essay? retrievedEssay = await _storageBroker.SelectEssayByIdAsync(essayId);
         await _storageBroker.DeleteEssayAsync(retrievedEssay!);
 
         return retrievedEssay;

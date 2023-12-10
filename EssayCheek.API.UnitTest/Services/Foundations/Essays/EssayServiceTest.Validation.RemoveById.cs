@@ -23,7 +23,8 @@ public partial class EssayServiceTest
                         new EssayValidationException(invalidEssayException);
 
         //when
-        ValueTask<Essay> removeEssayByIdTask = _essayService.RemoveEssayByIdAsync(invalidEssayId);
+        ValueTask<Essay> removeEssayByIdTask = 
+                        _essayService.RemoveEssayByIdAsync(invalidEssayId);
 
         EssayValidationException actualEssayValidationException =
                         await Assert.ThrowsAsync<EssayValidationException>(removeEssayByIdTask.AsTask);
