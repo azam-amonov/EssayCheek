@@ -14,11 +14,10 @@ public partial class EssayServiceTest
         Guid randomEssayId = Guid.NewGuid();
         Guid inputEssayId = randomEssayId;
         Essay randomEssay = CreateRandomEssay();
-        Essay storageEssay = randomEssay;
-        Essay expectedEssay = storageEssay.DeepClone();
+        Essay expectedEssay = randomEssay.DeepClone();
 
         _storageBrokerMock.Setup(broker =>
-                        broker.SelectEssayByIdAsync(inputEssayId)).ReturnsAsync(storageEssay);
+                        broker.SelectEssayByIdAsync(inputEssayId)).ReturnsAsync(randomEssay);
         
         //when
         Essay? actualEssay = await _essayService.RetrieveEssayByIdAsync(inputEssayId);
