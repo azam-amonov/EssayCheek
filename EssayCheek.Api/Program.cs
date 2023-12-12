@@ -1,5 +1,6 @@
 using EssayCheek.Api.Brokers.DateTimes;
 using EssayCheek.Api.Brokers.Logging;
+using EssayCheek.Api.Brokers.OpenAis;
 using EssayCheek.Api.Brokers.StorageBroker;
 using EssayCheek.Api.Services.EssayResults;
 using EssayCheek.Api.Services.Essays;
@@ -19,6 +20,7 @@ builder.Services.AddScoped<IDateTimeBroker, DateTimeBroker>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEssayService, EssayService>();
 builder.Services.AddScoped<IEssayResultService, EssayResultService>();
+builder.Services.AddScoped<IOpenAiBroker, OpenAiBroker>();
 
 var app = builder.Build();
 
