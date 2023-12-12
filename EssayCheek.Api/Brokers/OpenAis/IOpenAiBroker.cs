@@ -1,6 +1,6 @@
 namespace EssayCheek.Api.Brokers.OpenAis;
 
-internal partial interface IOpenAiBroker
+public partial interface IOpenAiBroker
 {
-  
+    
 }
