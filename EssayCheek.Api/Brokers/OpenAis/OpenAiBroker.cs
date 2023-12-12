@@ -11,18 +11,18 @@ internal partial class OpenAiBroker : IOpenAiBroker
     public OpenAiBroker(IConfiguration configuration)
     {
         _configuration = configuration;
-        _openAiClient = ConfigureOpenAIClient();
+        _openAiClient = ConfigureOpenAiClient();
     }
 
-    private IOpenAIClient ConfigureOpenAIClient()
+    private IOpenAIClient ConfigureOpenAiClient()
     {
-        string apiKey = _configuration.GetValue<string>(key:"OpenAiKey");
-        var opneAIConfiguration = new OpenAIConfigurations()
+        var apiKey = _configuration.GetValue<string>(key:"OpenAiKey");
+        var openAiConfiguration = new OpenAIConfigurations()
         {
-                        ApiKey = apiKey
-        };
-
-        return new OpenAIClient(opneAIConfiguration);
+            ApiKey = apiKey
+        }; 
+        
+        return new OpenAIClient(openAiConfiguration);
     }
 }
 
