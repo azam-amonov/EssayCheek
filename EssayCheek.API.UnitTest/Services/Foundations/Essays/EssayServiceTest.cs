@@ -23,7 +23,7 @@ public partial class EssayServiceTest
     public EssayServiceTest()
     {
         _storageBrokerMock = new Mock<IStorageBroker>();
-        _dateTimeBrokerMock =new  Mock<IDateTimeBroker>();
+        _dateTimeBrokerMock = new  Mock<IDateTimeBroker>();
         _loggingBrokerMock = new Mock<ILoggingBroker>();
         
         _essayService = new EssayService(
