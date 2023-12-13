@@ -1,7 +1,6 @@
 using EssayCheek.Api.Brokers.Logging;
 using EssayCheek.Api.Brokers.OpenAis;
 using EssayCheek.Api.Services.EssayAnalysis;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using Moq;
 using Standard.AI.OpenAI.Models.Services.Foundations.ChatCompletions;
 using Tynamix.ObjectFiller;
@@ -29,51 +28,23 @@ public partial class EssayAnalysisServiceTest
 
 	private static int GetRandomNumber() => 
 			new IntRange(min: 9, max: 99).GetValue();
+	
+	private static DateTimeOffset GetRandomDateTimeOffset() =>
+		new DateTimeRange(earliestDate: DateTime.UnixEpoch).GetValue();
 
 	private static ChatCompletion CreateOutputChatCompletion(string analysis)
 	{
-		var inputFiller = CreateInputChatCompletionFiller();
-		var partialChatCompletion = inputFiller.Create();
-		
-		partialChatCompletion.Response.Choices = new ChatCompletionChoice[]
-		{
-			new ChatCompletionChoice
-			{
-				Message = new ChatCompletionMessage
-				{
-					Content = analysis
-				}
-			}
-		};
-
-		return partialChatCompletion;
+		return CreateOutputChatCompletionFiller(analysis).Create();
 	}
 
-	// {
-	// 	return new ChatCompletion
-	// 	{
-	// 		Response = new ChatCompletionResponse
-	// 		{
-	// 			Choices = new ChatCompletionChoice[]
-	// 			{
-	// 				new ChatCompletionChoice
-	// 				{
-	// 					Message = new ChatCompletionMessage
-	// 					{
-	// 						Content = analysis
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	};
-	// }
-
-
-
-	private static Filler<ChatCompletion> CreateInputChatCompletionFiller()
+	private static Filler<ChatCompletion> CreateOutputChatCompletionFiller(string analysis)
 	{
 		var filler = new Filler<ChatCompletion>();
-		filler.Setup().OnProperty(chatCompletion => chatCompletion.Response).IgnoreIt();
+		
+		filler.Setup().OnProperty(chatCompletion => 
+			chatCompletion.Response.Choices.FirstOrDefault()!.Message.Content).Use(analysis);
+		
+		filler.Setup().OnType<DateTimeOffset>().Use(GetRandomDateTimeOffset);
 		
 		return filler;
 	}

@@ -25,7 +25,6 @@ public partial class EssayAnalysisServiceTest
 		string actualAnalysis = await _essayAnalysisService.AnalyzeEssayAsync(inputEssay);
 		
 		//then
-		
 		actualAnalysis.Should().BeEquivalentTo(expectedAnalysis);
 
 		_openAiBrokerMock.Verify(broker => 
