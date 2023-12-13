@@ -15,12 +15,11 @@ public class EssayAnalysisService : IEssayAnalysisService
 		_loggingBroker = loggingBroker;
 	}
 
-
 	public async ValueTask<string> AnalyzeEssayAsync(string essay)
 	{
 		ChatCompletion request = CreateRequest(essay);
 		ChatCompletion response = await _openAiBroker.AnalyzeEssayAsync(request);
-
+		
 		return response.Response.Choices.FirstOrDefault()!.Message.Content;
 	}
 
