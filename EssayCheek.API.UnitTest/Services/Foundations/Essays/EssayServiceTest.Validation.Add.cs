@@ -26,9 +26,9 @@ public partial class EssayServiceTest
        actualEssayValidationException.Should().BeEquivalentTo(expectedEssayValidationException);
 
        _loggingBrokerMock.Verify(broker => 
-                       broker.LogError(It.Is(SameExceptionAs(
-                            expectedEssayValidationException))),
-                       Times.Once);
+               broker.LogError(It.Is(SameExceptionAs(
+                   expectedEssayValidationException))), 
+           Times.Once);
        
        _loggingBrokerMock.VerifyNoOtherCalls();
        _storageBrokerMock.VerifyNoOtherCalls();
