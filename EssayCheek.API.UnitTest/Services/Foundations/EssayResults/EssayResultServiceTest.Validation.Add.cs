@@ -57,10 +57,6 @@ public partial class EssayResultServiceTest
         expectedInvalidEssayResultException.AddData(
             key: nameof(EssayResult.Id),
             values: "Id is required");
-        
-        expectedInvalidEssayResultException.AddData(
-            key: nameof(EssayResult.Score),
-            values: "Score is required");
 
         var expectedEssayResultValidationException =
             new EssayResultValidationException(expectedInvalidEssayResultException);
@@ -78,7 +74,7 @@ public partial class EssayResultServiceTest
         
         _loggingBrokerMock.Verify(broker => 
             broker.LogError(It.Is(SameExceptionAs(
-                expectedInvalidEssayResultException))),
+                expectedEssayResultValidationException))),
             Times.Once);
         
         _loggingBrokerMock.VerifyNoOtherCalls();

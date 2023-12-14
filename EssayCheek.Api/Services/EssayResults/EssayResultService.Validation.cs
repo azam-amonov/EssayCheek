@@ -15,19 +15,19 @@ public partial class EssayResultService
 
     private static dynamic IsInvalid(Guid id) => new
     {
-                    Condition = id == Guid.Empty,
-                    Message = "Id is required"
+        Condition = id == Guid.Empty,
+        Message = "Id is required"
     };
     private static dynamic IsInvalid(string text) => new
     {
-                    Condition = string.IsNullOrWhiteSpace(text),
-                    Message = "Text is required"
+        Condition = string.IsNullOrWhiteSpace(text),
+        Message = "Text is required"
     };
     
     private static dynamic IsInvalid(int score) => new
     {
-                    Condition = score == -1,
-                    Message = "Score is required"
+        Condition = score == -1,
+        Message = "Score is required"
     };
 
     private static void ValidateEssayResultIsNotNull(EssayResult essayResult)
@@ -47,11 +47,10 @@ public partial class EssayResultService
             if (rule.Condition)
             {
                 invalidEssayResultException.UpsertDataList(
-                                            key: parameter,
-                                            value: rule.Condition);
+                    key: parameter,
+                    value: rule.Message);
             }
         }
-        
         invalidEssayResultException.ThrowIfContainsErrors();
     }  
 }
