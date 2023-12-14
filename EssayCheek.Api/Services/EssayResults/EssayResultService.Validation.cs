@@ -9,8 +9,8 @@ public partial class EssayResultService
     {
         ValidateEssayResultIsNotNull(essayResult);
         Validate((Rule: IsInvalid(essayResult.Id), Parameter: nameof(essayResult.Id)),
-                        (Ruel: IsInvalid(essayResult.Feedback), Parameter: nameof(essayResult.Feedback)),
-                        (Ruel: IsInvalid(essayResult.Score), Parameter: nameof(essayResult.Score)));
+                        (Rule: IsInvalid(essayResult.Feedback), Parameter: nameof(essayResult.Feedback)),
+                        (Rule: IsInvalid(essayResult.Score), Parameter: nameof(essayResult.Score)));
     }
 
     private static dynamic IsInvalid(Guid id) => new
@@ -38,7 +38,7 @@ public partial class EssayResultService
         }
     }
     
-    private static void Validate(params (dynamic Ruel, string Parameter)[] validations)
+    private static void Validate(params (dynamic Rule, string Parameter)[] validations)
     {
         var invalidEssayResultException = new InvalidEssayResultException();
 
