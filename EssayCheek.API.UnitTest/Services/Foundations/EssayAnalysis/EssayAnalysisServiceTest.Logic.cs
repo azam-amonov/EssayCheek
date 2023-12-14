@@ -22,7 +22,7 @@ public partial class EssayAnalysisServiceTest
 					.ReturnsAsync(analyzedChatCompletion);
 		
 		//when
-		string actualAnalysis = await _essayAnalysisService.AnalyzeEssayAsync(inputEssay);
+		string actualAnalysis = await _essayAnalysisService.EssayAnalysisAsync(inputEssay);
 		
 		//then
 		actualAnalysis.Should().BeEquivalentTo(expectedAnalysis);

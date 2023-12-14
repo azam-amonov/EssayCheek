@@ -19,7 +19,7 @@ public partial class EssayAnalysisServiceTest
         
         //when
         ValueTask<string> responseEssayAnalysisTask = 
-            _essayAnalysisService.AnalyzeEssayAsync(nullContent);
+            _essayAnalysisService.EssayAnalysisAsync(nullContent);
 
         EssayAnalysisValidationException actualEssayAnalysisValidationException =
             await Assert.ThrowsAsync<EssayAnalysisValidationException>(
