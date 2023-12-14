@@ -1,5 +1,5 @@
 using EssayCheek.Api.Model.Foundation.EssayResults;
-using EssayCheek.Api.Model.Foundation.EssayResults.Exception;
+using EssayCheek.Api.Model.Foundation.EssayResults.Exceptions;
 
 namespace EssayCheek.Api.Services.EssayResults;
 
@@ -51,5 +51,7 @@ public partial class EssayResultService
                                             value: rule.Condition);
             }
         }
+        
+        invalidEssayResultException.ThrowIfContainsErrors();
     }  
 }

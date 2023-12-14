@@ -1,5 +1,5 @@
 using EssayCheek.Api.Model.Foundation.EssayResults;
-using EssayCheek.Api.Model.Foundation.EssayResults.Exception;
+using EssayCheek.Api.Model.Foundation.EssayResults.Exceptions;
 using FluentAssertions;
 using Moq;
 
@@ -30,6 +30,55 @@ public partial class EssayResultServiceTest
         _loggingBrokerMock.Verify(broker => 
             broker.LogError(It.Is(SameExceptionAs(
                 expectedEssayResultValidationException))),
+            Times.Once);
+        
+        _loggingBrokerMock.VerifyNoOtherCalls();
+        _storageBrokerMock.VerifyNoOtherCalls();
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("   ")]
+    public async Task ShouldThrowValidationExceptionOnAddIfEssayResultIsInvalidAndLogItAsync(string invalidText)
+    {
+        //given
+        var invalidEssayResult = new EssayResult()
+        {
+            Feedback = invalidText,
+        };
+
+        var expectedInvalidEssayResultException = new InvalidEssayResultException();
+        
+        expectedInvalidEssayResultException.AddData(
+            key: nameof(EssayResult.Feedback),
+            values: "Text is required");
+        
+        expectedInvalidEssayResultException.AddData(
+            key: nameof(EssayResult.Id),
+            values: "Id is required");
+        
+        expectedInvalidEssayResultException.AddData(
+            key: nameof(EssayResult.Score),
+            values: "Score is required");
+
+        var expectedEssayResultValidationException =
+            new EssayResultValidationException(expectedInvalidEssayResultException);
+        
+        //when
+        ValueTask<EssayResult> addEssayResultTask = 
+            _essayResultService.AddEssayResultsAsync(invalidEssayResult);
+
+        EssayResultValidationException actualEssayResultValidationException =
+            await Assert.ThrowsAsync<EssayResultValidationException>(addEssayResultTask.AsTask);
+
+        //then
+        actualEssayResultValidationException.Should().
+            BeEquivalentTo(expectedEssayResultValidationException);
+        
+        _loggingBrokerMock.Verify(broker => 
+            broker.LogError(It.Is(SameExceptionAs(
+                expectedInvalidEssayResultException))),
             Times.Once);
         
         _loggingBrokerMock.VerifyNoOtherCalls();

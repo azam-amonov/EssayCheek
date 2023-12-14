@@ -1,5 +1,5 @@
 using EssayCheek.Api.Model.Foundation.EssayResults;
-using EssayCheek.Api.Model.Foundation.EssayResults.Exception;
+using EssayCheek.Api.Model.Foundation.EssayResults.Exceptions;
 using Xeptions;
 
 namespace EssayCheek.Api.Services.EssayResults;
@@ -19,6 +19,23 @@ public partial class EssayResultService
         {
             throw CreateAndLogValidationException(essayResultNullException);
         }
+        catch (InvalidEssayResultException invalidEssayResultException)
+        {
+            throw CreateAndLogValidationException(invalidEssayResultException);
+        }
+        catch (Exception exception)
+        {
+            var failedEssayResultException = new FailedEssayResultServiceException(exception);
+            throw CreateAndLogServiceException(failedEssayResultException);
+        }
+    }
+
+    private Exception CreateAndLogServiceException(Xeption exception)
+    {
+        var essayResultServiceException = new EssayResultServiceException(exception);
+        _loggingBroker.LogError(essayResultServiceException);
+
+        return essayResultServiceException;
     }
 
     private EssayResultValidationException CreateAndLogValidationException(Xeption exception)
