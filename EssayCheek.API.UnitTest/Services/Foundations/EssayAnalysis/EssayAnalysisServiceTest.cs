@@ -1,9 +1,11 @@
+using System.Linq.Expressions;
 using EssayCheek.Api.Brokers.Logging;
 using EssayCheek.Api.Brokers.OpenAis;
 using EssayCheek.Api.Services.EssayAnalysis;
 using Moq;
 using Standard.AI.OpenAI.Models.Services.Foundations.ChatCompletions;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace EssayCheek.API.UnitTest.Services.Foundations.EssayAnalysis;
 
@@ -31,6 +33,9 @@ public partial class EssayAnalysisServiceTest
 	
 	private static DateTimeOffset GetRandomDateTimeOffset() =>
 		new DateTimeRange(earliestDate: DateTime.UnixEpoch).GetValue();
+
+	private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption exceptedException) => 
+		actualException => actualException.SameExceptionAs(exceptedException);
 
 	private static ChatCompletion CreateOutputChatCompletion(string analysis)
 	{

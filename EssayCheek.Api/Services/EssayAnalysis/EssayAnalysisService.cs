@@ -4,7 +4,7 @@ using Standard.AI.OpenAI.Models.Services.Foundations.ChatCompletions;
 
 namespace EssayCheek.Api.Services.EssayAnalysis;
 
-public class EssayAnalysisService : IEssayAnalysisService
+public partial class EssayAnalysisService : IEssayAnalysisService
 {
 	private readonly IOpenAiBroker _openAiBroker;
 	private readonly ILoggingBroker _loggingBroker;
@@ -15,14 +15,16 @@ public class EssayAnalysisService : IEssayAnalysisService
 		_loggingBroker = loggingBroker;
 	}
 
+	public ValueTask<string> EssayAnalysisAsync(string essay) =>
+		TryCatch(async () =>
+		{
+			ValidateEssayAnalysisIsNotNull(essay);
+			
+			ChatCompletion request = CreateRequest(essay);
+			ChatCompletion response = await _openAiBroker.AnalyzeEssayAsync(request);
 
-	public async ValueTask<string> AnalyzeEssayAsync(string essay)
-	{
-		ChatCompletion request = CreateRequest(essay);
-		ChatCompletion response = await _openAiBroker.AnalyzeEssayAsync(request);
-
-		return response.Response.Choices.FirstOrDefault()!.Message.Content;
-	}
+			return response.Response.Choices.FirstOrDefault()!.Message.Content;
+		});
 
 	private static ChatCompletion CreateRequest(string essay)
 	{

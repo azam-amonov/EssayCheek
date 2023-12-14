@@ -1,4 +1,3 @@
-using System.Data;
 using EssayCheek.Api.Model.Foundation.Essays;
 using EssayCheek.Api.Model.Foundation.Essays.Exceptions;
 
@@ -6,7 +5,6 @@ namespace EssayCheek.Api.Services.Essays;
 
 public partial class EssayService
 {
-
     private static void ValidateEssay(Essay essay)
     {
         ValidateEssayIsNotNull(essay);
@@ -21,6 +19,7 @@ public partial class EssayService
             Condition = id == Guid.Empty,
             Message = "Id is required"
     };
+    
     private static dynamic IsInvalid(string text) => new
     {
             Condition = string.IsNullOrWhiteSpace(text),
