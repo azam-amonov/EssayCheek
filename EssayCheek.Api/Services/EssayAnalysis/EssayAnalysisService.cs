@@ -33,23 +33,23 @@ public partial class EssayAnalysisService : IEssayAnalysisService
 			Request = new ChatCompletionRequest
 			{
 				Model = "gpt-4-1106-preview",
+				MaxTokens = 1500,
 				Messages = new ChatCompletionMessage[]
 				{
 					new ChatCompletionMessage
 					{
-						Role = "System",
+						Role = "system",
 						Content =
 							"You are IELTS Writing examiner. Give detailed IELTS score based on marking criteria of IELTS."
 					},
 					new ChatCompletionMessage
 					{
-						Role = "User",
+						Role = "user",
 						Content = essay
 					}
 				}
 			}
 		};
-		
 		return request;
 	}
 }

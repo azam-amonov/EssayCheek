@@ -1,7 +1,6 @@
-using EssayCheek.Api.Brokers.OpenAis;
+using EssayCheek.Api.Services.EssayAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
-using Standard.AI.OpenAI.Models.Services.Foundations.ChatCompletions;
 
 namespace EssayCheek.Api.Controllers;
 
@@ -9,19 +8,20 @@ namespace EssayCheek.Api.Controllers;
 [Route("api[controller]")]
 public class HomeController : RESTFulController
 {
-	private readonly IOpenAiBroker _openAiBroker;
+	private readonly IEssayAnalysisService _essayAnalysisService;
 
-	public HomeController(IOpenAiBroker openAiBroker)
+	public HomeController(IEssayAnalysisService essayAnalysisService)
 	{
-		_openAiBroker = openAiBroker;
+		_essayAnalysisService = essayAnalysisService;
 	}
 
 	[HttpGet]
 	public ActionResult<string> GetHomeMessage() => Ok("Tarteeb is running");
 
 	[HttpPost]
-	public async ValueTask<ActionResult<ChatCompletion>> Post(ChatCompletion chatCompletion)
+	public async ValueTask<ActionResult<string>> Post([FromBody] string essay)
 	{
-		return await _openAiBroker.AnalyzeEssayAsync(chatCompletion);
+		var result = await _essayAnalysisService.EssayAnalysisAsync(essay);
+		return Ok(result);
 	}
 }
