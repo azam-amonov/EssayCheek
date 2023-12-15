@@ -1,6 +1,6 @@
 using Xeptions;
 
-namespace EssayCheek.Api.Model.Foundation.EssayResults.Exception;
+namespace EssayCheek.Api.Model.Foundation.EssayResults.Exceptions;
 
 public class EssayResultNullException : Xeption
 {

@@ -1,5 +1,5 @@
 using EssayCheek.Api.Model.Foundation.EssayResults;
-using EssayCheek.Api.Model.Foundation.EssayResults.Exception;
+using EssayCheek.Api.Model.Foundation.EssayResults.Exceptions;
 
 namespace EssayCheek.Api.Services.EssayResults;
 
@@ -9,25 +9,25 @@ public partial class EssayResultService
     {
         ValidateEssayResultIsNotNull(essayResult);
         Validate((Rule: IsInvalid(essayResult.Id), Parameter: nameof(essayResult.Id)),
-                        (Ruel: IsInvalid(essayResult.Feedback), Parameter: nameof(essayResult.Feedback)),
-                        (Ruel: IsInvalid(essayResult.Score), Parameter: nameof(essayResult.Score)));
+                        (Rule: IsInvalid(essayResult.Feedback), Parameter: nameof(essayResult.Feedback)),
+                        (Rule: IsInvalid(essayResult.Score), Parameter: nameof(essayResult.Score)));
     }
 
     private static dynamic IsInvalid(Guid id) => new
     {
-                    Condition = id == Guid.Empty,
-                    Message = "Id is required"
+        Condition = id == Guid.Empty,
+        Message = "Id is required"
     };
     private static dynamic IsInvalid(string text) => new
     {
-                    Condition = string.IsNullOrWhiteSpace(text),
-                    Message = "Text is required"
+        Condition = string.IsNullOrWhiteSpace(text),
+        Message = "Text is required"
     };
     
     private static dynamic IsInvalid(int score) => new
     {
-                    Condition = score == -1,
-                    Message = "Score is required"
+        Condition = score == -1,
+        Message = "Score is required"
     };
 
     private static void ValidateEssayResultIsNotNull(EssayResult essayResult)
@@ -38,7 +38,7 @@ public partial class EssayResultService
         }
     }
     
-    private static void Validate(params (dynamic Ruel, string Parameter)[] validations)
+    private static void Validate(params (dynamic Rule, string Parameter)[] validations)
     {
         var invalidEssayResultException = new InvalidEssayResultException();
 
@@ -47,9 +47,10 @@ public partial class EssayResultService
             if (rule.Condition)
             {
                 invalidEssayResultException.UpsertDataList(
-                                            key: parameter,
-                                            value: rule.Condition);
+                    key: parameter,
+                    value: rule.Message);
             }
         }
+        invalidEssayResultException.ThrowIfContainsErrors();
     }  
 }
