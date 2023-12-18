@@ -5,11 +5,16 @@ using EssayCheek.Api.Brokers.StorageBroker;
 using EssayCheek.Api.Services.EssayAnalysis;
 using EssayCheek.Api.Services.EssayResults;
 using EssayCheek.Api.Services.Essays;
+using EssayCheek.Api.Services.TextFormatterService;
 using EssayCheek.Api.Services.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.InputFormatters.Add(new TextInputFormatter());
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<StorageBroker>();

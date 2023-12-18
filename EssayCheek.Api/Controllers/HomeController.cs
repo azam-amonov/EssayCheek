@@ -19,6 +19,7 @@ public class HomeController : RESTFulController
 	public ActionResult<string> GetHomeMessage() => Ok("Tarteeb is running");
 
 	[HttpPost]
+	[Consumes("text/plain")]
 	public async ValueTask<ActionResult<string>> Post([FromBody] string essay)
 	{
 		var result = await _essayAnalysisService.EssayAnalysisAsync(essay);
