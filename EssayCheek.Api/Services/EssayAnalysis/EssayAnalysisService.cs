@@ -40,7 +40,7 @@ public partial class EssayAnalysisService : IEssayAnalysisService
 					{
 						Role = "system",
 						Content =
-							"You are IELTS Writing examiner. Give detailed IELTS score based on marking criteria of IELTS."
+							"You are IELTS Writing examiner. Give detailed IELTS feedback based on marking criteria of IELTS."
 					},
 					new ChatCompletionMessage
 					{
