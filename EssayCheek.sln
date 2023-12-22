@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EssayCheek.Api", "EssayChee
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EssayCheek.API.UnitTest", "EssayCheek.API.UnitTest\EssayCheek.API.UnitTest.csproj", "{60142AE5-0AD4-4C93-A1E3-CD9CCFC97DFF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EssayCheek.View", "EssayCheek.View\EssayCheek.View.csproj", "{6BBA87B4-17B8-41BC-BEFA-E8A3713AB9D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{60142AE5-0AD4-4C93-A1E3-CD9CCFC97DFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60142AE5-0AD4-4C93-A1E3-CD9CCFC97DFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60142AE5-0AD4-4C93-A1E3-CD9CCFC97DFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BBA87B4-17B8-41BC-BEFA-E8A3713AB9D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BBA87B4-17B8-41BC-BEFA-E8A3713AB9D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BBA87B4-17B8-41BC-BEFA-E8A3713AB9D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BBA87B4-17B8-41BC-BEFA-E8A3713AB9D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

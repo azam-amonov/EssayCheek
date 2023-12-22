@@ -31,6 +31,12 @@ builder.Services.AddScoped<IEssayAnalysisService, EssayAnalysisService>();
 
 var app = builder.Build();
 
+app.Use(async (context, next) =>
+{
+    Console.WriteLine(context.Request.ContentType);
+    await next(context);
+});
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
