@@ -27,6 +27,7 @@
       <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
       <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
       <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+      <PackageReference Include="Telegram.Bot" Version="19.0.0" />
       <PackageReference Include="Tynamix.ObjectFiller" Version="1.5.8" />
       <PackageReference Include="Xeption" Version="2.6.0" />
       <PackageReference Include="xunit.extensibility.core" Version="2.4.2" />

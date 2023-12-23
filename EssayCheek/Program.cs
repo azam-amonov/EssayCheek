@@ -1,39 +1,69 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using Microsoft.AspNetCore.Components.Forms;
+using Telegram.Bot;
+using Telegram.Bot.Exceptions;
+using Telegram.Bot.Polling;
+using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
-Console.WriteLine("Hello, World!");
-var num = "1000";
-var toPrint = Convert.ToInt32(num);
 
- int ToDecimal(string binaryString)
- {
-	 var binaryNumber = Convert.ToInt32(binaryString);
-	 int decimalValue = 0;
-	 int base1 = 1;
-	 while (binaryNumber > 0)
-	 {
-		 int reminder = binaryNumber % 10;
-		 binaryNumber /= 10;
-		 decimalValue += reminder * base1;
-		 base1 *= 2;
-	 }
-	 return decimalValue;
- }
+using CancellationTokenSource cts = new ();
 
-string ToBinary(int decimalValue)
+const string token = "6750350401:AAFgcHkE3LCYjomJFndPuBpX0kxy6G9n8c0";
+const string url = "https://5516/apiHome";
+var botClient = new TelegramBotClient(token);
+
+
+// StartReceiving does not block the caller thread. Receiving is done on the ThreadPool.
+ReceiverOptions receiverOptions = new ()
 {
-	int[] binary = new int[10];
-	var result = "";
-	int i;
-	
-	for (i = 0; decimalValue > 0; i++)
-	{
-		binary[i] = decimalValue % 2;
-		decimalValue /= 2;
-	}
+    AllowedUpdates = Array.Empty<UpdateType>() // receive all update types except ChatMember related updates
+};
 
-	for (i -= 1; i >= 0; i--)
-		result += Convert.ToString(binary[i]);
-	
-	return result;
+botClient.StartReceiving(
+    updateHandler: HandleUpdateAsync,
+    pollingErrorHandler: HandlePollingErrorAsync,
+    receiverOptions: receiverOptions,
+    cancellationToken: cts.Token
+);
+
+var me = await botClient.GetMeAsync();
+
+Console.WriteLine($"Start listening for @{me.Username}");
+Console.ReadLine();
+
+// Send cancellation request to stop bot
+cts.Cancel();
+
+async Task HandleUpdateAsync(ITelegramBotClient telegramBotClient, Update update, CancellationToken cancellationToken)
+{
+    // Only process Message updates: https://core.telegram.org/bots/api#message
+    if (update.Message is not { } message)
+        return;
+    
+    // Only process text messages
+    if (message.Text is not { } messageText)
+        return;
+
+    var chatId = message.Chat.Id;
+
+    Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
+
+    // Echo received message text
+    Message sentMessage = await telegramBotClient.SendTextMessageAsync(
+        chatId: chatId,
+        text: "Ai Answer :\n" ,
+        cancellationToken: cancellationToken);
 }
 
+Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+{
+    var errorMessage = exception switch
+    {
+        ApiRequestException apiRequestException
+            => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
+        _ => exception.ToString()
+    };
+
+    Console.WriteLine(errorMessage);
+    return Task.CompletedTask;
+}
