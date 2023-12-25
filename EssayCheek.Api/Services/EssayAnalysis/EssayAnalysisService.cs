@@ -39,8 +39,10 @@ public partial class EssayAnalysisService : IEssayAnalysisService
 					new ChatCompletionMessage
 					{
 						Role = "system",
-						Content =
-							"You are IELTS Writing examiner. Give detailed IELTS feedback based on marking criteria of IELTS."
+						Content = // "send one interesting fact!"
+							"You are IELTS Writing examiner. " +
+							"Give detailed IELTS feedback based on marking criteria of IELTS." +
+							"Send massage in markdown format."
 					},
 					new ChatCompletionMessage
 					{
