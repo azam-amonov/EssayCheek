@@ -8,8 +8,8 @@ public partial class HostConfiguration
       .AddBrokers()
       .AddServices()
       .AddTextInputFormatter()
-      .AddDevTools();
-    
+      .AddDevTools()
+      .AddBot();
     return new(builder);
   }
   

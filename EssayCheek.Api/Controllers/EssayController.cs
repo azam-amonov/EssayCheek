@@ -15,28 +15,28 @@ public class EssayController : RESTFulController
     public EssayController(IEssayService essayService) =>
         _essayService = essayService;
 
-    [HttpPost("create-essay")]
+    [HttpPost]
     public async ValueTask<ActionResult<Essay>> PostEssayAsync(Essay essay)
     {
         Essay addedEssay = await _essayService.AddEssayAsync(essay);
         return Created(addedEssay);
     }
 
-    [HttpGet("get/all-essays")]
+    [HttpGet]
     public ActionResult<IQueryable<Essay>> GetAllEssays()
     {
         IQueryable<Essay> essays = _essayService.RetrieveAllEssays();
         return Ok(essays);
     }
 
-    [HttpGet("get/essay-by-id/{guid}")]
+    [HttpGet("get/{guid}")]
     public async ValueTask<ActionResult<Essay>> GetEssayById(Guid essayId)
     {
         Essay? retrievedEssay = await _essayService.RetrieveEssayByIdAsync(essayId);
         return Ok(retrievedEssay);
     }
 
-    [HttpDelete("delete/essay-by-id/{guid}")]
+    [HttpDelete("delete/{guid}")]
     public async ValueTask<ActionResult<Essay>> DeleteEssayById(Guid essayId)
     {
         Essay retrievedEssay = await _essayService.RemoveEssayByIdAsync(essayId);

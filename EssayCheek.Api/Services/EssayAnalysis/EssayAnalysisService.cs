@@ -33,14 +33,16 @@ public partial class EssayAnalysisService : IEssayAnalysisService
 			Request = new ChatCompletionRequest
 			{
 				Model = "gpt-4-1106-preview",
-				MaxTokens = 100,
+				MaxTokens = 1500,
 				Messages = new ChatCompletionMessage[]
 				{
 					new ChatCompletionMessage
 					{
 						Role = "system",
-						Content = "send one interesting fact!"
-							// "You are IELTS Writing examiner. Give detailed IELTS feedback based on marking criteria of IELTS."
+						Content = // "send one interesting fact!"
+							"You are IELTS Writing examiner. " +
+							"Give detailed IELTS feedback based on marking criteria of IELTS." +
+							"Send massage in markdown format."
 					},
 					new ChatCompletionMessage
 					{

@@ -9,6 +9,7 @@ using EssayCheek.Api.Services.Essays;
 using EssayCheek.Api.Services.TelegramBots;
 using EssayCheek.Api.Services.TextFormatterService;
 using EssayCheek.Api.Services.Users;
+using EssayCheek.Api.Settings;
 
 namespace EssayCheek.Api.Configuration;
 
@@ -61,6 +62,16 @@ public static partial class HostConfiguration
             options.InputFormatters.Add(new TextInputFormatter());
         });
 
+        return builder;
+    }
+
+    private static WebApplicationBuilder AddBot(this WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<BotSettings>(builder.Configuration.GetSection(nameof(BotSettings)));
+        
+        var provider = builder.Services.BuildServiceProvider();
+        var botService = provider.GetRequiredService<ITelegramBotService>();
+        botService.BotStartAsync();
         return builder;
     }
 

@@ -1,4 +1,6 @@
 using EssayCheek.Api.Services.EssayAnalysis;
+using EssayCheek.Api.Settings;
+using Microsoft.Extensions.Options;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
@@ -7,77 +9,35 @@ using Telegram.Bot.Types.Enums;
 
 namespace EssayCheek.Api.Services.TelegramBots;
 
-public class TelegramBotService : ITelegramBotService
+public  partial class TelegramBotService : ITelegramBotService
 {
-    private readonly CancellationTokenSource cts = new();
+    private readonly CancellationTokenSource cancellationTokenSource = new();
     private readonly IEssayAnalysisService essayAnalysisService;
-
-    private const string token = "6750350401:AAFgcHkE3LCYjomJFndPuBpX0kxy6G9n8c0";
+    private readonly BotSettings botSettings;
     
-    public TelegramBotService(IEssayAnalysisService essayAnalysisService)
+    public TelegramBotService(IEssayAnalysisService essayAnalysisService,
+        IOptions<BotSettings> botOptions)
     {
         this.essayAnalysisService = essayAnalysisService;
+        this.botSettings = botOptions.Value;
     }
 
-    public async Task BotStartAsync()
+    public Task BotStartAsync()
     {
-        var botClient = new TelegramBotClient(token);
+        var botClient = new TelegramBotClient(this.botSettings.Token);
 
-        // StartReceiving does not block the caller thread. Receiving is done on the ThreadPool.
         ReceiverOptions receiverOptions = new()
         {
-            AllowedUpdates = Array.Empty<UpdateType>() // receive all update types except ChatMember related updates
+            AllowedUpdates = Array.Empty<UpdateType>()
         };
 
         botClient.StartReceiving(
             updateHandler: HandleUpdateAsync,
             pollingErrorHandler: HandlePollingErrorAsync,
             receiverOptions: receiverOptions,
-            cancellationToken: cts.Token
+            cancellationToken: cancellationTokenSource.Token
         );
-        var me = await botClient.GetMeAsync();
-
-        Console.WriteLine($"Start listening for @{me.Username}");
-        Console.ReadLine();
-
-        // Send cancellation request to stop bot
-        cts.Cancel();
-    }
-
-    private async Task HandleUpdateAsync(ITelegramBotClient telegramBotClient, Update update,
-        CancellationToken cancellationToken)
-    {
-        // Only process Message updates: https://core.telegram.org/bots/api#message
-        if (update.Message is not { } message)
-            return;
-
-        // Only process text messages
-        if (message.Text is not { } messageText)
-            return;
-
-        var chatId = message.Chat.Id;
-
-        Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
         
-        var textToAi = await this.essayAnalysisService.EssayAnalysisAsync(messageText);
-        // Echo received message text
-        Message sentMessage = await telegramBotClient.SendTextMessageAsync(
-            chatId: chatId,
-            text: $"Your message :{messageText}\n" +
-                  $"Ai Answer: \n" + textToAi,
-            cancellationToken: cancellationToken);
-    }
-
-    private static Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
-    {
-        var errorMessage = exception switch
-        {
-            ApiRequestException apiRequestException
-                => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
-            _ => exception.ToString()
-        };
-
-        Console.WriteLine(errorMessage);
         return Task.CompletedTask;
     }
 }
