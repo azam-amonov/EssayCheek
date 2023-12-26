@@ -16,7 +16,7 @@ public class UsersController : RESTFulController
     public UsersController(IUserService userService) =>
         _userService = userService;
 
-    [HttpPost("create-user")]
+    [HttpPost]
     public async ValueTask<ActionResult<User>> PostUserAsync(User user)
     {
         try
@@ -39,7 +39,7 @@ public class UsersController : RESTFulController
         }
     }
 
-    [HttpGet("get-all-users")]
+    [HttpGet()]
     public ActionResult<IQueryable<User>> GetAllUsers()
     {
         try
@@ -57,7 +57,7 @@ public class UsersController : RESTFulController
         }
     }
 
-    [HttpGet("get-user-by-id/{userId}")]
+    [HttpGet("{userId}")]
     public async ValueTask<ActionResult<User>> GetUserByIdAsync(Guid userId)
     {
         try
@@ -79,7 +79,7 @@ public class UsersController : RESTFulController
         }
     }
 
-    [HttpPut("update-user")]
+    [HttpPut]
     public async ValueTask<ActionResult<User>> PutUserAsync(User user)
     {
         try
@@ -111,7 +111,7 @@ public class UsersController : RESTFulController
         }
     }
 
-    [HttpDelete("delete-user-by-id/{userId}")]
+    [HttpDelete("/{userId}")]
     public async ValueTask<ActionResult<User>> DeleteUserAsync(Guid userId)
     {
         try

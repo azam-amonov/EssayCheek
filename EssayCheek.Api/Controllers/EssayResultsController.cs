@@ -8,11 +8,11 @@ namespace EssayCheek.Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 
-public class EssayResultController : RESTFulController
+public class EssayResultsController : RESTFulController
 {
     private readonly IEssayResultService _sayResultService;
 
-    public EssayResultController(IEssayResultService sayResultService) =>
+    public EssayResultsController(IEssayResultService sayResultService) =>
         _sayResultService = sayResultService;
 
     [HttpPost]
