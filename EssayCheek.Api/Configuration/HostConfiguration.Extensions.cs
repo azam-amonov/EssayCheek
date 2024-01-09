@@ -40,7 +40,7 @@ public static partial class HostConfiguration
             .AddTransient<ILoggingBroker, LoggingBroker>()
             .AddTransient<IOpenAiBroker, OpenAiBroker>()
             .AddScoped<IDateTimeBroker, DateTimeBroker>()
-            .AddTransient<ITelegramBotBroker, TelegramBotBroker>();
+            .AddTransient<ITelegramBroker, TelegramBroker>();
         
         return builder;
     }

@@ -1,19 +1,17 @@
-using System.Runtime.CompilerServices;
 using Telegram.Bot;
 
 namespace EssayCheek.Api.Brokers.Telegram;
 
-public partial class TelegramBotBroker : ITelegramBotBroker
+public partial class TelegramBroker : ITelegramBroker
 {
     private readonly IConfiguration configuration;
     private readonly CancellationTokenSource cancellationTokenSource;
 
-    public TelegramBotBroker(IConfiguration configuration)
+    public TelegramBroker(IConfiguration configuration)
     {
         this.configuration = configuration;
         this.TelegramBotClient = ConfigureTelegramBotClient();
         this.cancellationTokenSource = new CancellationTokenSource();
-
     }
 
     private ITelegramBotClient ConfigureTelegramBotClient()
@@ -22,6 +20,5 @@ public partial class TelegramBotBroker : ITelegramBotBroker
         return new TelegramBotClient(token: botToken);
     }
 
-    public CancellationToken CancellationToken => this.cancellationTokenSource.Token;
     public ITelegramBotClient TelegramBotClient { get; }
 }
