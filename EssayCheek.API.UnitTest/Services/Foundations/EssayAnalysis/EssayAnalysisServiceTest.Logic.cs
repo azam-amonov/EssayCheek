@@ -18,7 +18,7 @@ public partial class EssayAnalysisServiceTest
 		ChatCompletion analyzedChatCompletion = CreateOutputChatCompletion(expectedAnalysis);
 
 		_openAiBrokerMock.Setup(broker => 
-				broker.AnalyzeEssayAsync(It.IsAny<ChatCompletion>()))
+				broker.MessageAnalyzeAsync(It.IsAny<ChatCompletion>()))
 					.ReturnsAsync(analyzedChatCompletion);
 		
 		//when
@@ -28,7 +28,7 @@ public partial class EssayAnalysisServiceTest
 		actualAnalysis.Should().BeEquivalentTo(expectedAnalysis);
 
 		_openAiBrokerMock.Verify(broker => 
-			broker.AnalyzeEssayAsync(It.IsAny<ChatCompletion>()), 
+			broker.MessageAnalyzeAsync(It.IsAny<ChatCompletion>()), 
 				Times.Once);
 
 		_openAiBrokerMock.VerifyNoOtherCalls();

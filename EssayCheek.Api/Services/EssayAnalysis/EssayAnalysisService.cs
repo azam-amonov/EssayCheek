@@ -21,37 +21,37 @@ public partial class EssayAnalysisService : IEssayAnalysisService
 			ValidateEssayAnalysisIsNotNull(essay);
 			
 			ChatCompletion request = CreateRequest(essay);
-			ChatCompletion response = await _openAiBroker.AnalyzeEssayAsync(request);
+			ChatCompletion response = await _openAiBroker.MessageAnalyzeAsync(request);
 
 			return response.Response.Choices.FirstOrDefault()!.Message.Content;
 		});
 
-	private static ChatCompletion CreateRequest(string essay)
+	private static ChatCompletion CreateRequest(string message)
 	{
 		var request = new ChatCompletion
 		{
 			Request = new ChatCompletionRequest
 			{
 				Model = "gpt-4-1106-preview",
-				MaxTokens = 1500,
+				MaxTokens = 60,
 				Messages = new ChatCompletionMessage[]
 				{
 					new ChatCompletionMessage
 					{
-						Role = "system",
-						Content = // "send one interesting fact!"
-							"You are IELTS Writing examiner. " +
-							"Give detailed IELTS feedback based on marking criteria of IELTS." +
-							"Send massage in markdown format."
+						Role = "assistant",
+						Content = "send one interesting fact!"	
+							// "You are an assistant, the user asked you to help him write an essay, so help him. " +
+							// "If the question is not related to the essay, tell him that the message is incorrect."
 					},
 					new ChatCompletionMessage
 					{
 						Role = "user",
-						Content = essay
+						Content = message
 					}
 				}
 			}
 		};
+		
 		return request;
 	}
 }
