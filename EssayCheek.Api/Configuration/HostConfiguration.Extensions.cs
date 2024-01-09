@@ -3,9 +3,11 @@ using EssayCheek.Api.Brokers.DateTimes;
 using EssayCheek.Api.Brokers.Logging;
 using EssayCheek.Api.Brokers.OpenAis;
 using EssayCheek.Api.Brokers.StorageBroker;
+using EssayCheek.Api.Brokers.Telegram;
 using EssayCheek.Api.Services.EssayAnalysis;
 using EssayCheek.Api.Services.EssayResults;
 using EssayCheek.Api.Services.Essays;
+using EssayCheek.Api.Services.TelegramBotAiAssistant;
 using EssayCheek.Api.Services.TelegramBots;
 using EssayCheek.Api.Services.TextFormatterService;
 using EssayCheek.Api.Services.Users;
@@ -37,7 +39,8 @@ public static partial class HostConfiguration
             .AddTransient<IStorageBroker, StorageBroker>()
             .AddTransient<ILoggingBroker, LoggingBroker>()
             .AddTransient<IOpenAiBroker, OpenAiBroker>()
-            .AddScoped<IDateTimeBroker, DateTimeBroker>();
+            .AddScoped<IDateTimeBroker, DateTimeBroker>()
+            .AddTransient<ITelegramBotBroker, TelegramBotBroker>();
         
         return builder;
     }
@@ -49,7 +52,8 @@ public static partial class HostConfiguration
             .AddTransient<IEssayService, EssayService>()
             .AddTransient<IEssayResultService, EssayResultService>()
             .AddTransient<IEssayAnalysisService, EssayAnalysisService>()
-            .AddTransient<ITelegramBotService, TelegramBotService>();
+            .AddTransient<ITelegramBotService, TelegramBotService>()
+            .AddTransient<ITelegramAiAssistantService, TelegramAiAssistantService>();
         
         return builder;
     }

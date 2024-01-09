@@ -4,5 +4,5 @@ namespace EssayCheek.Api.Brokers.OpenAis;
 
 public partial interface IOpenAiBroker
 {
-    ValueTask<ChatCompletion> AnalyzeEssayAsync(ChatCompletion chatCompletion);
+    ValueTask<ChatCompletion> MessageAnalyzeAsync(ChatCompletion chatCompletion);
 }

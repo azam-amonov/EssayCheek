@@ -18,8 +18,7 @@ public sealed partial class StorageBroker : EFxceptionsContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
-        string? connectionString = _configuration.GetConnectionString("DefaultConnection");
-        
+        var connectionString = _configuration.GetConnectionString("DefaultConnection");
         builder.UseNpgsql(connectionString);
     }
 

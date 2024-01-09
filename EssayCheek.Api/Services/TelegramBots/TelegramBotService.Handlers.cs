@@ -1,3 +1,5 @@
+using EssayCheek.Api.Services.EssayAnalysis;
+using EssayCheek.Api.Services.TelegramBotAiAssistant;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
@@ -7,25 +9,32 @@ namespace EssayCheek.Api.Services.TelegramBots;
 
 public partial class TelegramBotService
 {
+    private readonly IEssayAnalysisService essayAnalysisService;
+    private readonly ITelegramAiAssistantService telegramAiAssistant;
+
     private async Task HandleUpdateAsync(ITelegramBotClient telegramBotClient, Update update,
         CancellationToken cancellationToken)
     {
-        if (update.Message is not { } message)
-            return;
-
-        if (message.Text is not { } messageText)
-            return;
-
-        var textToAi = await this.essayAnalysisService.EssayAnalysisAsync(messageText);
+        var message = update.Message;
+        string botMessage; 
+        Console.WriteLine(message.Text);
         
-        Message sentMessage = await telegramBotClient.SendTextMessageAsync(
+        await telegramBotClient.SendChatActionAsync(chatId: message.Chat.Id, ChatAction.Typing,
+            cancellationToken: cancellationToken );
+        
+            botMessage = await telegramAiAssistant.UserMessageAnalysis(message.Text);
+            // botMessage = await essayAnalysisService.EssayAnalysisAsync(message.Text);
+            // botMessage = message.Text;
+        
+        await telegramBotClient.SendTextMessageAsync(
             chatId: message.Chat.Id,
             parseMode: ParseMode.Markdown,
-            text: textToAi,
+            text: botMessage,
+            replyToMessageId: message.MessageId,
             cancellationToken: cancellationToken);
     }
-    
-    private static Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, 
+
+    private static Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception,
         CancellationToken cancellationToken)
     {
         var errorMessage = exception switch
