@@ -2,8 +2,8 @@ using Telegram.Bot;
 
 namespace EssayCheek.Api.Brokers.Telegram;
 
-public partial interface ITelegramBotBroker
+public partial interface ITelegramBroker
 {
-    internal CancellationToken CancellationToken { get; }
     internal ITelegramBotClient TelegramBotClient { get; }
+    internal CancellationTokenSource CancellationTokenSource { get; }
 }

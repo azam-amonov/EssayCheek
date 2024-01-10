@@ -11,7 +11,6 @@ using EssayCheek.Api.Services.TelegramBotAiAssistant;
 using EssayCheek.Api.Services.TelegramBots;
 using EssayCheek.Api.Services.TextFormatterService;
 using EssayCheek.Api.Services.Users;
-using EssayCheek.Api.Settings;
 
 namespace EssayCheek.Api.Configuration;
 
@@ -40,7 +39,7 @@ public static partial class HostConfiguration
             .AddTransient<ILoggingBroker, LoggingBroker>()
             .AddTransient<IOpenAiBroker, OpenAiBroker>()
             .AddScoped<IDateTimeBroker, DateTimeBroker>()
-            .AddTransient<ITelegramBotBroker, TelegramBotBroker>();
+            .AddTransient<ITelegramBroker, TelegramBroker>();
         
         return builder;
     }
@@ -69,14 +68,11 @@ public static partial class HostConfiguration
         return builder;
     }
 
-    private static WebApplicationBuilder AddBot(this WebApplicationBuilder builder)
+    private static void AddBot(this WebApplicationBuilder builder)
     {
-        builder.Services.Configure<BotSettings>(builder.Configuration.GetSection(nameof(BotSettings)));
-        
         var provider = builder.Services.BuildServiceProvider();
         var botService = provider.GetRequiredService<ITelegramBotService>();
         botService.BotStartAsync();
-        return builder;
     }
 
     private static WebApplicationBuilder AddExposers(this WebApplicationBuilder builder)

@@ -2,32 +2,34 @@ using EssayCheek.Api.Brokers.Logging;
 using EssayCheek.Api.Brokers.Telegram;
 using EssayCheek.Api.Services.EssayAnalysis;
 using EssayCheek.Api.Services.TelegramBotAiAssistant;
-using EssayCheek.Api.Settings;
-using Microsoft.Extensions.Options;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
 
 namespace EssayCheek.Api.Services.TelegramBots;
 
-public  partial class TelegramBotService : ITelegramBotService
+public partial class TelegramBotService : ITelegramBotService
 {
-    private readonly ITelegramBotBroker telegramBotBroker;
+    private readonly ITelegramBroker telegramBroker;
     private readonly ILoggingBroker loggingBroker;
     
-    public TelegramBotService(ITelegramBotBroker telegramBotBroker, ILoggingBroker loggingBroker, 
-        IEssayAnalysisService essayAnalysisService, ITelegramAiAssistantService telegramAiAssistant)
+    public TelegramBotService(ITelegramBroker telegramBroker, 
+        ILoggingBroker loggingBroker, 
+        IEssayAnalysisService essayAnalysisService, 
+        ITelegramAiAssistantService telegramAiAssistant)
     {
-        this.telegramBotBroker = telegramBotBroker;
+        this.telegramBroker = telegramBroker;
         this.loggingBroker = loggingBroker;
         this.telegramAiAssistant = telegramAiAssistant;
         this.essayAnalysisService = essayAnalysisService;
     }
 
-    public Task BotStartAsync(){
 
-    var botClient = this.telegramBotBroker.TelegramBotClient;
-
+    public Task BotStartAsync()
+    {
+        var botClient = this.telegramBroker.TelegramBotClient;
+        var cancellationToken = this.telegramBroker.CancellationTokenSource.Token;
+        
         ReceiverOptions receiverOptions = new()
         {
             AllowedUpdates = Array.Empty<UpdateType>()
@@ -37,9 +39,9 @@ public  partial class TelegramBotService : ITelegramBotService
             updateHandler: HandleUpdateAsync,
             pollingErrorHandler: HandlePollingErrorAsync,
             receiverOptions: receiverOptions,
-            cancellationToken: this.telegramBotBroker.CancellationToken
+            cancellationToken: cancellationToken
         );
-        
+
         return Task.CompletedTask;
     }
 }
