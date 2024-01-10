@@ -5,4 +5,5 @@ namespace EssayCheek.Api.Brokers.Telegram;
 public partial interface ITelegramBroker
 {
     internal ITelegramBotClient TelegramBotClient { get; }
+    internal CancellationTokenSource CancellationTokenSource { get; }
 }

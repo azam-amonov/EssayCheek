@@ -9,6 +9,7 @@ public partial class HostConfiguration
       .AddServices()
       .AddTextInputFormatter()
       .AddDevTools()
+      .AddExposers()
       .AddBot();
     return new(builder);
   }
