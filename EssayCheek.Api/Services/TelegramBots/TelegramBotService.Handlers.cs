@@ -15,29 +15,28 @@ public partial class TelegramBotService
         CancellationToken cancellationToken)
     {
         var botClient = this.telegramBroker.TelegramBotClient;
+        var message = update.Message;
+
         
         await MessageAction(botClient: botClient, update: update, cancellationToken: cancellationToken);
-        await SendMessageAsync(botClient, update, cancellationToken);
+        var response = await telegramAiAssistant.UserMessageAnalysis(message.Text);
+        Console.WriteLine(response);
+        
+        await botClient.SendTextMessageAsync(
+            chatId: message.Chat.Id,
+            text: message.Text,
+            replyToMessageId: message.MessageId,
+            cancellationToken: cancellationToken);
     }
 
     private static async Task MessageAction(ITelegramBotClient botClient, Update update,
         CancellationToken cancellationToken)
     {
         var message = update.Message;
+        
         await botClient.SendChatActionAsync(
             chatId: message.Chat.Id,
             chatAction: ChatAction.Typing,
-            cancellationToken: cancellationToken);
-    }
-
-    private static async Task SendMessageAsync(ITelegramBotClient botClient, Update update,
-        CancellationToken cancellationToken)
-    {
-        var message = update.Message;
-        await botClient.SendTextMessageAsync(
-            chatId: message.Chat.Id,
-            text: message.Text,
-            replyToMessageId: message.MessageId,
             cancellationToken: cancellationToken);
     }
 }

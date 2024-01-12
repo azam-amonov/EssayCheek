@@ -21,5 +21,4 @@ public class TelegramBroker : ITelegramBroker
 
     public ITelegramBotClient TelegramBotClient { get; }
     public CancellationTokenSource CancellationTokenSource { get; }
- 
 }

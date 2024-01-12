@@ -33,7 +33,7 @@ public partial class TelegramAiAssistantService : ITelegramAiAssistantService
             Request = new ChatCompletionRequest
             {
                 Model = "gpt-4-1106-preview",
-                MaxTokens = 100,
+                MaxTokens = 500,
                 Messages = new ChatCompletionMessage[]
                 {
                     new ChatCompletionMessage
